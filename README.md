@@ -17,7 +17,8 @@ This repository contains the results of five comparative tests evaluating Bonsai
 | **#1** | Linux Commands | `linux_cmd_testing.chatdsl`, `linux_cmd_testing_actual/` |
 | **#2** | Bash Scripting | `bash_testing.chatdsl`, `bash_testing_actual/` |
 | **#3** | C++ Code Generation | `cpp_algorithms.chatdsl`, `cpp_algorithms_actual/` |
-| **#4** | Needle in Haystack | `haystack_test.chatdsl`, `haystack_test_actual/` |
+| **#4a** | Needle in Haystack (Hard) | `haystack_test.chatdsl`, `haystack_test_actual/` |
+| **#4b** | Needle in Haystack (Easy) | `easy_haystack.chatdsl` |
 | **#5** | Tokens Per Second | `tps+20260519_*.csv` |
 
 ---
@@ -59,13 +60,25 @@ Evaluates the ability to generate correct, compilable C++ code for algorithmic p
   - `final_scores.txt` - Test scores
   - `final_verdict.txt` - Evaluation summary
 
-### Test #4: Needle in Haystack
-Evaluates the ability to find specific information within large blocks of text (contextual retrieval).
+### Test #4a: Needle in Haystack (Hard)
+Evaluates the ability to find specific information within large blocks of text with **multiple distractor UUIDs** (contextual retrieval). The hard version contains 5 identical decoy UUIDs and 1 unique `hay_key:` target, where the unique UUID is off by one character from the others.
 
 - **Prompt/Input:** `haystack_test.chatdsl`
 - **Results:** `haystack_test_actual/`
   - `mistral_1_haystack_result.txt` - Mistral AI output
   - `prism_bonsai_haystack_result.txt` - Bonsai output
+  - `comparison_report.txt` - Side-by-side comparison
+  - `final_scores.txt` - Test scores
+  - `final_verdict.txt` - Evaluation summary
+
+### Test #4b: Needle in Haystack (Easy)
+Simplified version with **exactly one UUID** in the text. The `easy_key:` appears only once, making it easier to locate.
+
+- **Prompt/Input:** `easy_haystack.chatdsl`
+- **Key:** `easy_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D4`
+- **Results:** `easy_haystack_test_actual/` (to be generated on run)
+  - `prism_bonsai_easy_haystack_result.txt` - Bonsai output
+  - `mistral_1_easy_haystack_result.txt` - Mistral AI output
   - `comparison_report.txt` - Side-by-side comparison
   - `final_scores.txt` - Test scores
   - `final_verdict.txt` - Evaluation summary
@@ -100,6 +113,7 @@ bonsai/
 │       └── compilation_results.md
 ├── haystack_test.chatdsl
 ├── haystack_test_actual/
+├── easy_haystack.chatdsl
 ├── logic_problems.chatdsl
 ├── pascal_algorithms.chatdsl
 ├── pascal_test2.chatdsl
