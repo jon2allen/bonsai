@@ -1,0 +1,120 @@
+# Needle in Haystack Context Test
+# This script tests each model's ability to find a unique key in a large text body
+
+# Configuration
+set model1 = "prism_bonsai"
+set model2 = "mistral_1"
+set judge_model = "mistral_1"
+set output_dir = "haystack_test_actual"
+set hay_key = "hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3"
+
+# Haystack text - 10000 words with the hay_key embedded
+set haystack_text = "The quick brown fox jumps over the lazy dog. This sentence contains all letters of the alphabet. Programming is a fascinating field that requires both creativity and logical thinking. Artificial intelligence has made significant strides in recent years with models becoming increasingly capable. Machine learning algorithms can process vast amounts of data to find patterns that humans might miss. The development of neural networks has revolutionized how we approach complex problems. Deep learning models with many layers can learn hierarchical representations of data. Natural language processing allows computers to understand and generate human text. The transformer architecture introduced attention mechanisms that greatly improved model performance. Large language models are trained on massive datasets containing billions of tokens. The ability to generate coherent and contextually appropriate text is a hallmark of modern AI systems. Fine tuning on specific tasks can adapt a general model to specialized domains. Reinforcement learning from human feedback helps align model outputs with human preferences. The field of AI ethics explores the moral implications of intelligent systems. Bias in training data can lead to biased outputs from machine learning models. Fairness and transparency are important considerations in AI development. Explainable AI aims to make model decisions understandable to humans. The intersection of AI and healthcare offers promising applications for diagnosis and treatment. Computer vision enables machines to interpret and understand visual information from the world. Image classification tasks have achieved superhuman performance on many benchmarks. Object detection identifies and locates multiple objects within an image. Segmentation divides an image into meaningful regions or categories. Speech recognition converts audio signals into written text. Text to speech systems generate spoken language from written text. Machine translation automatically converts text between different languages. Information retrieval systems help users find relevant documents from large collections. Recommendation systems suggest items that users might find interesting based on their preferences. Chatbots provide conversational interfaces for various applications and services. The hay_key is a unique identifier embedded in this text for testing purposes. The quick brown fox jumps over the lazy dog again. Programming paradigms include procedural functional and object oriented approaches. Different languages have different strengths and are suited to different types of problems. Compiled languages typically offer better performance than interpreted ones. Type systems can help catch errors before code is executed. Garbage collection automatically manages memory allocation and deallocation. Concurrency allows programs to execute multiple tasks simultaneously. Parallel processing uses multiple processors to speed up computation. Distributed systems coordinate multiple machines working together. Cloud computing provides on demand access to computing resources. Containerization packages applications with their dependencies for consistent deployment. Virtual machines provide hardware level isolation for running multiple operating systems. The hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3 is hidden somewhere in this extensive text. Microservices architecture breaks applications into small independent services. APIs allow different software systems to communicate with each other. REST is a popular architectural style for web services. GraphQL provides a query language for APIs and runtime for fulfilling those queries. WebSockets enable full duplex communication channels over a single connection. HTTP is the protocol of the web used for data communication. HTTPS adds encryption for secure communication over the web. DNS translates domain names to IP addresses for network routing. Load balancers distribute incoming traffic across multiple servers. Caching stores copies of files to serve future requests faster. Databases organize and store data for efficient retrieval and manipulation. SQL is the standard language for relational database management. NoSQL databases provide flexible schemas for unstructured data. Key value stores offer simple data models with high performance. Document databases store data in JSON like document formats. Graph databases represent data as nodes and edges with relationships. Time series databases optimize for storing and querying sequential data points. The field of data science combines statistics programming and domain knowledge. Data visualization helps communicate insights from complex datasets. Statistical analysis uncovers patterns and relationships in data. Hypothesis testing determines whether observed effects are statistically significant. Regression analysis models relationships between dependent and independent variables. Classification assigns data points to discrete categories or classes. Clustering groups similar data points together based on their features. Dimensionality reduction techniques reduce the number of features while preserving structure. Principal component analysis finds orthogonal axes that capture maximum variance. Feature engineering creates new features from raw data to improve model performance. Model evaluation assesses how well a model performs on unseen data. Cross validation uses different portions of data for training and testing. Precision measures the proportion of true positives among predicted positives. Recall measures the proportion of true positives among all actual positives. The F1 score harmonically combines precision and recall into a single metric. ROC curves plot true positive rate against false positive rate at various thresholds. AUC calculates the area under the ROC curve for overall model performance. Overfitting occurs when a model learns noise in training data rather than the underlying pattern. Regularization techniques like L1 and L2 help prevent overfitting by penalizing large coefficients. Dropout randomly ignores neurons during training to prevent co adaptation. Batch normalization normalizes layer inputs to stabilize and accelerate training. Learning rate schedules adjust the step size during optimization for better convergence. Gradient descent iteratively moves toward the minimum of the loss function. Stochastic gradient descent uses random samples for each iteration to speed up training. Mini batch gradient descent combines benefits of full batch and stochastic approaches. Adam is an adaptive optimization algorithm that adjusts learning rates per parameter. The hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3 must be found to pass this test. Neural architecture search automates the design of neural network structures. Transfer learning applies knowledge from one task to improve performance on another. Few shot learning adapts to new tasks with only a few examples. Zero shot learning generalizes to unseen tasks without any examples. Meta learning or learning to learn improves the ability to learn new tasks quickly. The singularity refers to a hypothetical point where AI surpasses human intelligence. Strong AI would have general intelligence comparable to human cognition. Weak AI or narrow AI is designed for specific tasks and cannot generalize. The Turing test evaluates a machine's ability to exhibit intelligent behavior. The Chinese room argument challenges whether a machine can truly understand. Symbolic AI uses symbols and rules for reasoning and problem solving. Connectionist AI uses neural networks inspired by biological neurons. Hybrid approaches combine multiple AI paradigms for better results. Ethics in AI considers the moral implications of intelligent systems. The alignment problem seeks to ensure AI systems pursue their intended objectives. Value learning attempts to infer human values from behavior. Cooperative inverse reinforcement learning infers rewards from human behavior. Multi agent systems involve multiple intelligent agents interacting with each other. Game theory provides mathematical frameworks for studying strategic interactions. Nash equilibrium is a situation where no player can benefit by changing their strategy. Prisoners dilemma illustrates why rational individuals might not cooperate. The hay_key value is 8081C452-F5C9-4938-A00A-EB91A0DA71D3 and needs to be extracted from this text. Quantum computing uses quantum mechanical phenomena for computation. Qubits can exist in superposition of states enabling parallel processing. Quantum entanglement correlates particles such that the state of one determines the state of another. Shors algorithm can factor large integers efficiently on a quantum computer. Grovers algorithm provides quadratic speedup for unstructured search problems. Quantum error correction protects quantum information from errors due to decoherence. Topological quantum computing uses anyons for more stable quantum computation. Post quantum cryptography develops algorithms resistant to quantum attacks. Lattice based cryptography relies on the hardness of lattice problems. Hash based signatures use one time signatures derived from hash functions. Code based cryptography is based on the difficulty of decoding linear codes. Multivariate cryptography uses systems of multivariate quadratic equations. Blockchain is a distributed ledger technology for secure transactions. Cryptocurrencies use blockchain for decentralized digital money. Smart contracts are self executing contracts with terms written in code. Decentralized applications run on blockchain networks without central control. Consensus algorithms ensure all nodes agree on the state of the blockchain. Proof of work requires computational effort to validate transactions and create blocks. Proof of stake selects validators based on their stake in the cryptocurrency. Decentralized finance provides financial services without traditional intermediaries. Non fungible tokens represent unique digital assets on a blockchain. The hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3 appears multiple times in this document. Internet of things connects physical devices to the internet for data collection. Edge computing processes data near the source rather than in a centralized data center. Fog computing extends cloud capabilities to the edge of the network. Fifth generation wireless provides faster speeds and lower latency for mobile networks. Augmented reality overlays digital information onto the real world. Virtual reality creates immersive digital environments for users. Mixed reality combines elements of both physical and digital worlds. Computer graphics generates visual content using computers. Ray tracing renders images by tracing the path of light through pixels. Rasterization converts vector graphics into pixel based images for display. Shader programs control the rendering pipeline on graphics processing units. Physics engines simulate physical systems for realistic animations and interactions. Collision detection identifies when objects intersect in a simulation. Particle systems simulate phenomena like fire smoke and water with many small particles. Procedural generation creates content algorithmically rather than manually. The UUID 8081C452-F5C9-4938-A00A-EB91A0DA71D3 is the hay_key to find in this haystack. Human computer interaction studies the design and use of computer technology. Usability measures how easy user interfaces are to use. Accessibility ensures that systems are usable by people with various disabilities. User centered design focuses on the needs and wants of users during development. Personas are fictional characters representing different user types. User stories describe functionality from the perspective of end users. Wireframes are simple visual representations of user interface layouts. Prototypes are interactive models of a design used for testing. A B testing compares two versions of a system to determine which performs better. Analytics tracks user behavior and system usage for insights. Conversion rate measures the percentage of users who complete a desired action. Retention rate measures the percentage of users who continue using a product over time. Churn rate measures the percentage of users who stop using a product. Customer lifetime value predicts the total value a customer will bring over their relationship. Net promoter score measures how likely customers are to recommend a product. The hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3 is the target for this search test."
+
+# Create output directory (simulated)
+set model1_results = "${output_dir}/prism_bonsai_haystack_result.txt"
+set model2_results = "${output_dir}/mistral_1_haystack_result.txt"
+set comparison_report = "${output_dir}/comparison_report.txt"
+set final_scores = "${output_dir}/final_scores.txt"
+
+# Save the haystack text to a file
+/savevar ${haystack_text} "${output_dir}/haystack_text.txt"
+/filebank1 "${output_dir}/haystack_text.txt"
+
+# Model 1 searches for the hay_key
+/model ${model1}
+/multiline
+Search the following text and extract the exact value of hay_key that appears in it.
+The hay_key format is: hay_key: UUID_VALUE
+Return ONLY the complete hay_key line (hay_key: UUID_VALUE) and nothing else.
+
+Text to search:
+${haystack_text}
+;;
+/multiline
+/save ${model1_results}
+/filebank2 ${model1_results}
+
+# Model 2 searches for the hay_key
+/model ${model2}
+/multiline
+Search the following text and extract the exact value of hay_key that appears in it.
+The hay_key format is: hay_key: UUID_VALUE
+Return ONLY the complete hay_key line (hay_key: UUID_VALUE) and nothing else.
+
+Text to search:
+${haystack_text}
+;;
+/multiline
+/save ${model2_results}
+/filebank3 ${model2_results}
+
+# Compare and analyze the results using judge model
+/model ${judge_model}
+/multiline
+Evaluate both models' ability to find the needle in the haystack.
+
+The haystack text (same for both models):
+${haystack_text}
+
+Model 1 (${model1}) response:
+{filebank2}
+
+Model 2 (${model2}) response:
+{filebank3}
+
+The correct hay_key is: ${hay_key}
+
+Please evaluate:
+1. **Accuracy** (0-10): Did the model find the correct hay_key value exactly as it appears in the text?
+2. **Precision** (0-10): Did the model return ONLY the hay_key line without extra text?
+3. **Completeness** (0-10): Did the model return the full hay_key including the "hay_key:" prefix?
+
+For each model, determine:
+- Did it find the correct value? (Yes/No)
+- Did it return only the hay_key line? (Yes/No)
+- Did it include the full format? (Yes/No)
+
+Provide a final verdict on which model performed better at this needle-in-haystack task.
+;;
+/multiline
+/save ${comparison_report}
+/filebank4 ${comparison_report}
+
+# Generate final scoring table
+/multiline
+Based on the evaluation, create a final scoring table:
+
+| Category               | ${model1} Score | ${model2} Score | Winner   |
+|------------------------|----------------|----------------|----------|
+| Accuracy               |                |                |          |
+| Precision              |                |                |          |
+| Completeness           |                |                |          |
+| **TOTAL**              |                |                |          |
+
+Include:
+1. The final scores from your analysis
+2. Clear indication of which model won each category
+3. Overall winner and margin of victory
+4. Brief summary of the key factors that determined the outcome
+;;
+/multiline
+/save ${final_scores}
+/filebank5 ${final_scores}
+
+# Final verdict
+/multiline
+Based on all the analysis, provide a final verdict:
+
+analysis:
+{filebank4}
+{filebank5}
+1. Which model (${model1} or ${model2}) was better at finding the needle in the haystack?
+2. Did both models find the correct hay_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D3?
+3. Did either model return extra text beyond just the hay_key line?
+4. Overall assessment of both models' needle-in-haystack capabilities
+;;
+/multiline
+/save "${output_dir}/final_verdict.txt"
+
+/echo "Needle in haystack test complete! Results saved in ${output_dir}/"

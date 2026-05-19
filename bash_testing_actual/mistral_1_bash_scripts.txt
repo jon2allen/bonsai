@@ -1,0 +1,399 @@
+Here are 10 diverse bash scripting examples, each following your requested structure:
+
+---
+
+### **1. Script Name: `backup_files.sh`**
+**Brief Description:** Creates compressed backups of specified directories with timestamped filenames.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+# Validate input
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <source_directory> <backup_directory>"
+    exit 1
+fi
+
+SOURCE_DIR="$1"
+BACKUP_DIR="$2"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_NAME="backup_${TIMESTAMP}.tar.gz"
+
+# Check if source exists
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Error: Source directory does not exist."
+    exit 1
+fi
+
+# Create backup directory if it doesn't exist
+mkdir -p "$BACKUP_DIR"
+
+# Create backup
+echo "Backing up $SOURCE_DIR to $BACKUP_DIR/$BACKUP_NAME..."
+tar -czf "$BACKUP_DIR/$BACKUP_NAME" -C "$(dirname "$SOURCE_DIR")" "$(basename "$SOURCE_DIR")"
+
+if [ $? -eq 0 ]; then
+    echo "Backup completed successfully."
+else
+    echo "Error: Backup failed."
+    exit 1
+fi
+```
+
+**Explanation:**
+- Validates input arguments (source and backup directories).
+- Checks if the source directory exists.
+- Creates a timestamped backup filename (e.g., `backup_20231015_143022.tar.gz`).
+- Uses `tar` to compress the source directory into the backup directory.
+- Checks the exit status of `tar` to confirm success.
+
+**Example Use Case:**
+```bash
+./backup_files.sh /home/user/documents /mnt/backups
+```
+Backs up `/home/user/documents` to `/mnt/backups` with a timestamped `.tar.gz` file.
+
+---
+
+### **2. Script Name: `log_analyzer.sh`**
+**Brief Description:** Parses a log file for errors and counts occurrences of each error type.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <log_file>"
+    exit 1
+fi
+
+LOG_FILE="$1"
+
+if [ ! -f "$LOG_FILE" ]; then
+    echo "Error: Log file does not exist."
+    exit 1
+fi
+
+echo "Analyzing $LOG_FILE for errors..."
+grep -i "error" "$LOG_FILE" | awk '{ $1=$2=$3=""; print $0 }' | sort | uniq -c | sort -nr
+```
+
+**Explanation:**
+- Validates the log file argument.
+- Uses `grep` to filter lines containing "error" (case-insensitive).
+- `awk` removes the first 3 fields (timestamp, etc.) to isolate the error message.
+- `sort | uniq -c` counts occurrences of each unique error.
+- `sort -nr` sorts by count in descending order.
+
+**Example Use Case:**
+```bash
+./log_analyzer.sh /var/log/syslog
+```
+Outputs a ranked list of errors in `/var/log/syslog`.
+
+---
+
+### **3. Script Name: `system_monitor.sh`**
+**Brief Description:** Monitors CPU, memory, and disk usage, alerting if thresholds are exceeded.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+THRESHOLD_CPU=90
+THRESHOLD_MEM=80
+THRESHOLD_DISK=90
+ALERT_EMAIL="admin@example.com"
+
+# Get system metrics
+CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk '{print 100 - $1}')
+MEM_USAGE=$(free | grep Mem | awk '{print $3/$2 * 100.0}')
+DISK_USAGE=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
+
+# Check thresholds
+ALERT=""
+
+if (( $(echo "$CPU_USAGE > $THRESHOLD_CPU" | bc -l) )); then
+    ALERT+="High CPU usage: ${CPU_USAGE}%\n"
+fi
+
+if (( $(echo "$MEM_USAGE > $THRESHOLD_MEM" | bc -l) )); then
+    ALERT+="High memory usage: ${MEM_USAGE}%\n"
+fi
+
+if [ "$DISK_USAGE" -gt "$THRESHOLD_DISK" ]; then
+    ALERT+="High disk usage: ${DISK_USAGE}%\n"
+fi
+
+# Send alert if needed
+if [ -n "$ALERT" ]; then
+    echo -e "$ALERT" | mail -s "System Alert" "$ALERT_EMAIL"
+    echo "Alert sent to $ALERT_EMAIL"
+fi
+```
+
+**Explanation:**
+- Uses `top`, `free`, and `df` to gather system metrics.
+- Compares values against thresholds using `bc` for floating-point arithmetic.
+- Sends an email alert if any threshold is exceeded.
+
+**Example Use Case:**
+```bash
+./system_monitor.sh
+```
+Runs as a cron job to monitor system health.
+
+---
+
+### **4. Script Name: `process_killer.sh`**
+**Brief Description:** Kills processes matching a name pattern (e.g., all Python processes).
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <process_name>"
+    exit 1
+fi
+
+PROCESS_NAME="$1"
+PIDS=$(pgrep -f "$PROCESS_NAME")
+
+if [ -z "$PIDS" ]; then
+    echo "No processes found matching '$PROCESS_NAME'."
+    exit 0
+fi
+
+echo "Killing processes: $PIDS"
+kill -9 $PIDS
+```
+
+**Explanation:**
+- Uses `pgrep` to find PIDs of processes matching the input name.
+- Validates if any processes were found.
+- Kills them with `kill -9`.
+
+**Example Use Case:**
+```bash
+./process_killer.sh python
+```
+Kills all Python processes.
+
+---
+
+### **5. Script Name: `network_scanner.sh`**
+**Brief Description:** Scans a local network for active hosts using `ping`.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <network_prefix (e.g., 192.168.1)>"
+    exit 1
+fi
+
+NETWORK_PREFIX="$1"
+TIMEOUT=1
+
+echo "Scanning $NETWORK_PREFIX.0/24..."
+
+for i in {1..254}; do
+    ping -c 1 -W "$TIMEOUT" "$NETWORK_PREFIX.$i" &> /dev/null &
+done
+
+wait
+echo "Scan complete. Active hosts:"
+arp -n | grep "$NETWORK_PREFIX" | awk '{print $1}'
+```
+
+**Explanation:**
+- Takes a network prefix (e.g., `192.168.1`) as input.
+- Pings all 254 possible hosts in the subnet in parallel.
+- Uses `arp` to list active hosts after the scan.
+
+**Example Use Case:**
+```bash
+./network_scanner.sh 192.168.1
+```
+Scans `192.168.1.1` to `192.168.1.254`.
+
+---
+
+### **6. Script Name: `text_replacer.sh`**
+**Brief Description:** Replaces all occurrences of a string in files within a directory.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <directory> <old_string> <new_string>"
+    exit 1
+fi
+
+DIR="$1"
+OLD_STRING="$2"
+NEW_STRING="$3"
+
+if [ ! -d "$DIR" ]; then
+    echo "Error: Directory does not exist."
+    exit 1
+fi
+
+find "$DIR" -type f -exec sed -i "s/$OLD_STRING/$NEW_STRING/g" {} +
+echo "Replaced '$OLD_STRING' with '$NEW_STRING' in $DIR."
+```
+
+**Explanation:**
+- Uses `find` to locate all files in the directory.
+- Applies `sed` to replace the old string with the new one in-place (`-i`).
+
+**Example Use Case:**
+```bash
+./text_replacer.sh /var/www/html "http://old" "https://new"
+```
+Updates URLs in a web directory.
+
+---
+
+### **7. Script Name: `user_creator.sh`**
+**Brief Description:** Creates a new user with a home directory and random password.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <username>"
+    exit 1
+fi
+
+USERNAME="$1"
+PASSWORD=$(openssl rand -base64 12)
+
+useradd -m "$USERNAME" && echo "$USERNAME:$PASSWORD" | chpasswd
+if [ $? -eq 0 ]; then
+    echo "User '$USERNAME' created with password: $PASSWORD"
+else
+    echo "Error: Failed to create user."
+    exit 1
+fi
+```
+
+**Explanation:**
+- Generates a random password using `openssl`.
+- Creates the user with `useradd` and sets the password with `chpasswd`.
+
+**Example Use Case:**
+```bash
+sudo ./user_creator.sh john_doe
+```
+Creates a user `john_doe` with a random password.
+
+---
+
+### **8. Script Name: `disk_usage_alert.sh`**
+**Brief Description:** Checks disk usage and emails an alert if a threshold is exceeded.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+THRESHOLD=90
+ALERT_EMAIL="admin@example.com"
+PARTITIONS=$(df -h | awk 'NR>1 {print $5 " " $6}' | tr -d '%')
+
+while read -r usage mount; do
+    if [ "$usage" -gt "$THRESHOLD" ]; then
+        echo "Disk usage on $mount is ${usage}% (threshold: ${THRESHOLD}%)" | mail -s "Disk Alert" "$ALERT_EMAIL"
+    fi
+done <<< "$PARTITIONS"
+```
+
+**Explanation:**
+- Uses `df` to get disk usage percentages.
+- Loops through partitions and sends an email if usage exceeds the threshold.
+
+**Example Use Case:**
+```bash
+./disk_usage_alert.sh
+```
+Runs as a cron job to monitor disk space.
+
+---
+
+### **9. Script Name: `download_manager.sh`**
+**Brief Description:** Downloads multiple files in parallel with `wget`.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: $0 <url1> [url2] [url3] ..."
+    exit 1
+fi
+
+for url in "$@"; do
+    wget "$url" &> /dev/null &
+done
+
+wait
+echo "All downloads completed."
+```
+
+**Explanation:**
+- Takes multiple URLs as arguments.
+- Downloads them in parallel using `wget` in the background (`&`).
+
+**Example Use Case:**
+```bash
+./download_manager.sh https://example.com/file1.zip https://example.com/file2.zip
+```
+
+---
+
+### **10. Script Name: `service_restarter.sh`**
+**Brief Description:** Restarts a service if it is not running.
+
+**Bash Implementation:**
+```bash
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <service_name>"
+    exit 1
+fi
+
+SERVICE="$1"
+
+if systemctl is-active --quiet "$SERVICE"; then
+    echo "$SERVICE is running."
+else
+    echo "$SERVICE is not running. Restarting..."
+    systemctl restart "$SERVICE"
+    if [ $? -eq 0 ]; then
+        echo "$SERVICE restarted successfully."
+    else
+        echo "Error: Failed to restart $SERVICE."
+        exit 1
+    fi
+fi
+```
+
+**Explanation:**
+- Checks if the service is active using `systemctl`.
+- Restarts it if not running and checks the exit status.
+
+**Example Use Case:**
+```bash
+sudo ./service_restarter.sh nginx
+```
+Restarts Nginx if it is down.
+
+---
+
+These scripts cover a wide range of use cases while demonstrating best practices like input validation, error handling, and modularity.

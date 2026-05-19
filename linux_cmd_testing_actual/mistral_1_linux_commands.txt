@@ -1,0 +1,455 @@
+Here’s a list of **50 non-shell Linux commands** with structured details, covering diverse categories:
+
+---
+
+### **1. `ls`**
+**Summary:** Lists directory contents with various formatting options.
+**Novel Example:**
+```bash
+ls -lhS | head -n 5  # List top 5 largest files in human-readable format
+```
+
+---
+
+### **2. `find`**
+**Summary:** Searches for files/directories recursively based on criteria.
+**Novel Example:**
+```bash
+find /var/log -type f -mtime +30 -exec gzip {} \;  # Compress logs older than 30 days
+```
+
+---
+
+### **3. `grep`**
+**Summary:** Searches text using patterns (regex).
+**Novel Example:**
+```bash
+grep -r "TODO" --include="*.py" .  # Find all "TODO" comments in Python files
+```
+
+---
+
+### **4. `sed`**
+**Summary:** Stream editor for text transformations.
+**Novel Example:**
+```bash
+sed -i 's/192\.168\.1\./10.0.0./g' config.txt  # Replace IPs in a config file
+```
+
+---
+
+### **5. `awk`**
+**Summary:** Text processing language for columnar data.
+**Novel Example:**
+```bash
+awk -F',' '{sum+=$3} END {print sum/NR}' data.csv  # Calculate average of column 3
+```
+
+---
+
+### **6. `cut`**
+**Summary:** Extracts sections from lines of files.
+**Novel Example:**
+```bash
+cut -d':' -f1,6 /etc/passwd | column -t -s':'  # Show usernames and home dirs neatly
+```
+
+---
+
+### **7. `sort`**
+**Summary:** Sorts lines of text files.
+**Novel Example:**
+```bash
+sort -t',' -k2,2nr access.log | head -n 10  # Top 10 most accessed URLs by hits
+```
+
+---
+
+### **8. `uniq`**
+**Summary:** Filters adjacent duplicate lines.
+**Novel Example:**
+```bash
+sort file.txt | uniq -c | sort -nr  # Count and rank word frequencies
+```
+
+---
+
+### **9. `ps`**
+**Summary:** Reports process status.
+**Novel Example:**
+```bash
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head  # Top memory-consuming processes
+```
+
+---
+
+### **10. `top`**
+**Summary:** Interactive process viewer.
+**Novel Example:**
+```bash
+top -b -n 1 | grep -A 10 "PID USER"  # Batch-mode top output for scripting
+```
+
+---
+
+### **11. `df`**
+**Summary:** Reports filesystem disk space usage.
+**Novel Example:**
+```bash
+df -h --output=source,size,used,avail,pcent | grep -v "tmpfs"  # Filter out tmpfs
+```
+
+---
+
+### **12. `du`**
+**Summary:** Estimates file space usage.
+**Novel Example:**
+```bash
+du -h --max-depth=1 /var | sort -h  # Show disk usage by subdirectory
+```
+
+---
+
+### **13. `free`**
+**Summary:** Displays memory usage.
+**Novel Example:**
+```bash
+free -h --si | awk '/Mem/{print $3 "/" $2}'  # Human-readable used/total memory
+```
+
+---
+
+### **14. `lsof`**
+**Summary:** Lists open files and processes.
+**Novel Example:**
+```bash
+lsof -i :80 -nP | grep LISTEN  # Find processes listening on port 80
+```
+
+---
+
+### **15. `ping`**
+**Summary:** Tests network connectivity.
+**Novel Example:**
+```bash
+ping -c 5 -i 0.2 -W 1 8.8.8.8  # Fast ping with 0.2s interval and 1s timeout
+```
+
+---
+
+### **16. `traceroute`**
+**Summary:** Traces network path to a host.
+**Novel Example:**
+```bash
+traceroute -n -m 15 -w 0.5 google.com  # Numeric output, max 15 hops, 0.5s timeout
+```
+
+---
+
+### **17. `netstat`**
+**Summary:** Network statistics (deprecated; use `ss`).
+**Novel Example:**
+```bash
+netstat -tulnp | grep -E '(:80|:443)'  # Check web server ports
+```
+
+---
+
+### **18. `ss`**
+**Summary:** Socket statistics (modern `netstat` replacement).
+**Novel Example:**
+```bash
+ss -tulnp 'sport = :22'  # Show SSH listeners
+```
+
+---
+
+### **19. `curl`**
+**Summary:** Transfers data via URLs.
+**Novel Example:**
+```bash
+curl -s -H "Authorization: Bearer TOKEN" https://api.example.com/data | jq .  # API call with auth
+```
+
+---
+
+### **20. `wget`**
+**Summary:** Downloads files from the web.
+**Novel Example:**
+```bash
+wget -r -l 2 -np -nH --cut-dirs=1 -R "index.html*" http://example.com/docs/  # Mirror docs
+```
+
+---
+
+### **21. `kill`**
+**Summary:** Sends signals to processes.
+**Novel Example:**
+```bash
+kill -SIGUSR1 $(pgrep nginx)  # Gracefully reload Nginx
+```
+
+---
+
+### **22. `pkill`**
+**Summary:** Kills processes by name.
+**Novel Example:**
+```bash
+pkill -f "python.*script.py"  # Kill a specific Python script
+```
+
+---
+
+### **23. `nice`**
+**Summary:** Adjusts process priority.
+**Novel Example:**
+```bash
+nice -n 19 tar -czf backup.tar.gz /data  # Run backup with lowest priority
+```
+
+---
+
+### **24. `renice`**
+**Summary:** Alters priority of running processes.
+**Novel Example:**
+```bash
+renice -n 5 -p $(pgrep -f "ffmpeg")  # Lower ffmpeg CPU priority
+```
+
+---
+
+### **25. `tar`**
+**Summary:** Archives files.
+**Novel Example:**
+```bash
+tar -czf - /etc | ssh user@backup "cat > etc_backup.tar.gz"  # Remote backup via SSH
+```
+
+---
+
+### **26. `gzip`**
+**Summary:** Compresses files.
+**Novel Example:**
+```bash
+gzip -k -9 large.log  # Keep original, max compression
+```
+
+---
+
+### **27. `bzip2`**
+**Summary:** Compresses files (better ratio than gzip).
+**Novel Example:**
+```bash
+bzip2 -c access.log > access.log.bz2  # Compress without deleting original
+```
+
+---
+
+### **28. `xz`**
+**Summary:** High-ratio compression.
+**Novel Example:**
+```bash
+xz -T0 -9 archive.tar  # Multi-threaded max compression
+```
+
+---
+
+### **29. `zip`**
+**Summary:** Creates ZIP archives.
+**Novel Example:**
+```bash
+zip -r -e secure.zip /sensitive/data  # Encrypted ZIP
+```
+
+---
+
+### **30. `useradd`**
+**Summary:** Creates a new user.
+**Novel Example:**
+```bash
+useradd -m -s /bin/zsh -G sudo,developers alice  # Create user with Zsh and groups
+```
+
+---
+
+### **31. `usermod`**
+**Summary:** Modifies user accounts.
+**Novel Example:**
+```bash
+usermod -aG docker $(whoami)  # Add current user to Docker group
+```
+
+---
+
+### **32. `chmod`**
+**Summary:** Changes file permissions.
+**Novel Example:**
+```bash
+chmod -R u=rwX,g=rX,o= /shared  # Recursive permissions (X = execute only if dir)
+```
+
+---
+
+### **33. `chown`**
+**Summary:** Changes file ownership.
+**Novel Example:**
+```bash
+chown -R www-data:www-data /var/www/html  # Set web server ownership
+```
+
+---
+
+### **34. `apt`**
+**Summary:** Debian package manager.
+**Novel Example:**
+```bash
+apt list --upgradable | awk -F/ '/^.*/ {print $1}' | xargs apt install -y  # Upgrade all
+```
+
+---
+
+### **35. `yum`**
+**Summary:** RHEL/CentOS package manager.
+**Novel Example:**
+```bash
+yum repo-pkgs epel list installed  # List installed EPEL packages
+```
+
+---
+
+### **36. `dnf`**
+**Summary:** Modern RHEL package manager.
+**Novel Example:**
+```bash
+dnf history undo last  # Revert last transaction
+```
+
+---
+
+### **37. `dpkg`**
+**Summary:** Debian package tool.
+**Novel Example:**
+```bash
+dpkg -l | grep ^rc | awk '{print $2}' | xargs dpkg --purge  # Remove residual configs
+```
+
+---
+
+### **38. `rpm`**
+**Summary:** RHEL package tool.
+**Novel Example:**
+```bash
+rpm -qf /usr/bin/ls  # Find which package owns a file
+```
+
+---
+
+### **39. `mkfs`**
+**Summary:** Creates a filesystem.
+**Novel Example:**
+```bash
+mkfs.ext4 -L "Data" -m 1 /dev/sdb1  # Label filesystem, reserve 1% for root
+```
+
+---
+
+### **40. `fsck`**
+**Summary:** Checks/repairs filesystems.
+**Novel Example:**
+```bash
+fsck -y /dev/sda1  # Auto-repair filesystem
+```
+
+---
+
+### **41. `mount`**
+**Summary:** Mounts filesystems.
+**Novel Example:**
+```bash
+mount -o remount,ro /  # Remount root as read-only
+```
+
+---
+
+### **42. `umount`**
+**Summary:** Unmounts filesystems.
+**Novel Example:**
+```bash
+umount -l /mnt/stuck  # Lazy unmount (force)
+```
+
+---
+
+### **43. `dd`**
+**Summary:** Copies/backs up raw data.
+**Novel Example:**
+```bash
+dd if=/dev/zero of=/tmp/testfile bs=1M count=1000 status=progress  # Benchmark disk
+```
+
+---
+
+### **44. `which`**
+**Summary:** Locates a command’s binary.
+**Novel Example:**
+```bash
+which -a python  # Show all Python binaries in PATH
+```
+
+---
+
+### **45. `whereis`**
+**Summary:** Finds binaries, sources, and man pages.
+**Novel Example:**
+```bash
+whereis -b -B /usr/local/bin -f nginx  # Search for nginx in /usr/local/bin
+```
+
+---
+
+### **46. `locate`**
+**Summary:** Fast file search (uses database).
+**Novel Example:**
+```bash
+locate -i "*.conf" | grep -E "/etc/.*nginx"  # Case-insensitive search for Nginx configs
+```
+
+---
+
+### **47. `date`**
+**Summary:** Displays/sets system date.
+**Novel Example:**
+```bash
+date -d "2 days ago" +"%Y-%m-%d"  # Get date 2 days ago in YYYY-MM-DD format
+```
+
+---
+
+### **48. `cal`**
+**Summary:** Displays calendar.
+**Novel Example:**
+```bash
+cal -3  # Show previous/current/next month
+```
+
+---
+
+### **49. `lscpu`**
+**Summary:** Displays CPU architecture info.
+**Novel Example:**
+```bash
+lscpu | grep -E "Model name|Socket|Core|Thread"  # Key CPU details
+```
+
+---
+
+### **50. `lspci`**
+**Summary:** Lists PCI devices.
+**Novel Example:**
+```bash
+lspci -v -s $(lspci | grep -i nvidia | awk '{print $1}')  # Verbose Nvidia GPU info
+```
+
+---
+
+This list covers **practical, real-world examples** across categories.

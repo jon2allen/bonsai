@@ -1,0 +1,241 @@
+Here is a list of **50 non-shell Linux commands** with their **command names**, **summary of use**, and **novel examples**. These commands are actual utilities, not shell built-ins, and are categorized for practical use.
+
+---
+
+### **File and Directory Operations**
+
+1. **`find`**  
+   Search for files and directories in a directory tree.  
+   *Example:* `find /home -type f -name "*.log" -exec grep "error" {} \;` — search all `.log` files for the word "error".
+
+2. **`ls -l`**  
+   List files with detailed permissions and metadata.  
+   *Example:* `ls -l /var/log` — list all log files with their permissions and ownership.
+
+3. **`mkdir -p`**  
+   Create directories recursively.  
+   *Example:* `mkdir -p /opt/myapp/logs/2025` — create a directory structure for logging.
+
+4. **`rm -rf`**  
+   Remove a directory and all its contents recursively.  
+   *Example:* `rm -rf /tmp/old_project` — delete an old project directory and all its files.
+
+5. **`mv`**  
+   Move or rename files and directories.  
+   *Example:* `mv /var/www/html/old` — move an old website directory to a backup location.
+
+---
+
+### **Text Processing**
+
+6. **`grep`**  
+   Search for patterns in files.  
+   *Example:* `grep -r "404" /var/log` — search all log files for HTTP 404 errors.
+
+7. **`sed`**  
+   Stream editor for filtering and transforming text.  
+   *Example:* `sed -i 's/old content/new content/' /etc/hosts` — replace old entries with new ones.
+
+8. **`awk`**  
+   Pattern scanning and processing language.  
+   *Example:* `awk '{print $3}' /var/log/syslog` — extract the third field from each line in the syslog file.
+
+9. **`cut`**  
+   Cut out sections from files.  
+   *Example:* `cut -d' ' -f1 /etc/passwd` — extract the username from each line.
+
+10. **`sort`**  
+    Sort lines of text.  
+    *Example:* `sort -n /var/log/messages` — sort log messages numerically.
+
+11. **`uniq`**  
+    Remove duplicate lines from input.  
+    *Example:* `uniq /var/log/syslog` — remove repeated log messages.
+
+12. **`tr`**  
+    Translate or delete characters.  
+    *Example:* `tr 'a-z' 'A-Z' /var/log/user.log` — convert lowercase to uppercase in a log file.
+
+---
+
+### **System Information**
+
+13. **`ps`**  
+    Print process information.  
+    *Example:* `ps -ef | grep -i 'nginx'` — list all processes with the word "nginx".
+
+14. **`top`**  
+    Real-time process monitoring.  
+    *Example:* `top -b -n 1` — run `top` in batch mode for a single terminal session.
+
+15. **`df`**  
+    Display disk space usage.  
+    *Example:* `df -h /home` — show disk usage for the home directory in human-readable format.
+
+16. **`du`**  
+    Estimate file space usage.  
+    *Example:* `du -sh /var/cache/nginx` — show the size of the Nginx cache directory.
+
+17. **`free`**  
+    Display memory and swap usage.  
+    *Example:* `free -h` — show memory and swap usage in human-readable format.
+
+18. **`lsof`**  
+    List open files, processes, and sockets.  
+    *Example:* `lsof -i :80` — list all open files on port 80.
+
+---
+
+### **Network Operations**
+
+19. **`ping`**  
+    Test network connectivity.  
+    *Example:* `ping -c 4 8.8.8.8` — send 4 packets to Google's public DNS server.
+
+20. **`traceroute`**  
+    Trace the path packets take to reach a destination.  
+    *Example:* `traceroute google.com` — see the network path to Google's servers.
+
+21. **`netstat`**  
+    Display network connections, routing tables, and listening ports.  
+    *Example:* `netstat -tuln` — list all TCP and UDP connections, listening ports, and their states.
+
+22. **`ss`**  
+    Simplified socket statistics.  
+    *Example:* `ss -tuln` — same as `netstat`, but more modern and concise.
+
+23. **`curl`**  
+    Transfer data from or to a URL.  
+    *Example:* `curl -o output.txt https://example.com/data` — download data and save it to a file.
+
+24. **`wget`**  
+    Download files from a URL.  
+    *Example:* `wget -r --no-check-certificate https://example.com/` — recursively download a website with no certificate checks.
+
+25. **`ss`**  
+    Simplified socket statistics.  
+    *Example:* `ss -tuln` — list all TCP and UDP connections, listening ports, and their states.
+
+---
+
+### **Process Management**
+
+26. **`kill`**  
+    Terminate a process by its PID.  
+    *Example:* `kill -9 1234` — terminate the process with PID 1234.
+
+27. **`pkill`**  
+    Kill processes by name.  
+    *Example:* `pkill -f "nginx worker"` — kill all Nginx worker processes.
+
+28. **`nice`**  
+    Set the priority of a process.  
+    *Example:* `nice -n 10 sleep` — run a sleep command with a priority of 10.
+
+29. **`renice`**  
+    Change the priority of a running process.  
+    *Example:* `renice -n 10 -f sleep` — change the priority of the sleeping process.
+
+30. **`ps`**  
+    Print process information.  
+    *Example:* `ps -ef | grep -i 'nginx'` — list all Nginx processes.
+
+---
+
+### **Archive and Compression**
+
+31. **`tar`**  
+    Create and extract tarballs.  
+    *Example:* `tar -czvf backup.tar.gz /var/www` — create a compressed tarball of the web directory.
+
+32. **`gzip`**  
+    Compress data using the gzip algorithm.  
+    *Example:* `gzip /var/log/messages` — compress the messages log file.
+
+33. **`bzip2`**  
+    Compress data using the Bzip2 algorithm.  
+    *Example:* `bzip2 /var/log/messages` — compress the messages log file using Bzip2.
+
+34. **`xz`**  
+    Compress data using the XZ algorithm.  
+    *Example:* `xz /var/log/messages` — compress the messages log file using XZ.
+
+35. **`zip`**  
+    Create and extract ZIP archives.  
+    *Example:* `zip -r project.zip /home/user` — create a ZIP archive of the user's project directory.
+
+36. **`unzip`**  
+    Extract ZIP archives.  
+    *Example:* `unzip project.zip` — extract the contents of the ZIP file.
+
+---
+
+### **User and Permission Management**
+
+37. **`useradd`**  
+    Add a new user.  
+    *Example:* `useradd -m -s /bin/bash newuser` — create a new user with a home directory and a shell.
+
+38. **`usermod`**  
+    Modify user attributes.  
+    *Example:* `usermod -aG www-data newuser` — add the user to the www-data group.
+
+39. **`chmod`**  
+    Change file permissions.  
+    *Example:* `chmod 755 /var/www` — set permissions to 755 on the web directory.
+
+40. **`chown`**  
+    Change the owner of a file.  
+    *Example:* `chown -R www-data /var/www` — change the owner of the web directory to the www-data group.
+
+41. **`id`**  
+    Show user and group IDs.  
+    *Example:* `id newuser` — show the user ID and group ID of the newuser.
+
+---
+
+### **Package Management**
+
+42. **`apt`**  
+    Manage packages in Debian/Ubuntu.  
+    *Example:* `apt update && apt upgrade -y` — update the package list and upgrade all packages.
+
+43. **`apt-get`**  
+    Manage packages in Debian/Ubuntu.  
+    *Example:* `apt-get install nginx` — install the Nginx package.
+
+44. **`yum`**  
+    Manage packages in Red Hat-based systems.  
+    *Example:* `yum install nginx` — install the Nginx package.
+
+45. **`dnf`**  
+    Manage packages in Fedora.  
+    *Example:* `dnf install nginx` — install the Nginx package.
+
+46. **`dpkg`**  
+    Manage packages in Debian.  
+    *Example:* `dpkg -i nginx-1.20.1-1+deb11` — install a Debian package from a repository.
+
+47. **`rpm`**  
+    Manage packages in Red Hat-based systems.  
+    *Example:* `rpm -ivh nginx-1.20.1-1+rpm28.x86_64.deb` — install an RPM package.
+
+48. **`dpkg`**  
+    Manage packages in Debian.  
+    *Example:* `dpkg -i nginx-1.20.1-1+deb11` — install a Debian package from a repository.
+
+---
+
+### **Disk and Filesystem**
+
+49. **`mkfs`**  
+    Create a filesystem on a disk.  
+    *Example:* `mkfs.ext4 /dev/sdb1` — create an ext4 filesystem on the first partition of disk sdb.
+
+50. **`fsck`**  
+    Check and repair filesystems.  
+    *Example:* `fsck /dev/sda1` — check and repair the filesystem on disk sda1.
+
+---
+
+Let me know if you'd like these commands grouped by category or need more examples!

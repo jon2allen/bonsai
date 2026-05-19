@@ -1,0 +1,537 @@
+Here are 10 diverse C++ algorithm examples covering various categories:
+
+---
+
+### 1. **Binary Search**
+**Brief Description**:
+Efficiently finds the position of a target value in a **sorted** array by repeatedly dividing the search interval in half.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+
+int binarySearch(const std::vector<int>& arr, int target) {
+    int left = 0;
+    int right = arr.size() - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return -1; // Not found
+}
+
+int main() {
+    std::vector<int> arr = {1, 3, 5, 7, 9, 11};
+    int target = 7;
+    int result = binarySearch(arr, target);
+    std::cout << "Element found at index: " << result << std::endl;
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(log n) (halving the search space each time).
+- **Space**: O(1) (iterative implementation).
+
+**Example Use Case**:
+Searching for a student’s ID in a sorted database of 1 million records.
+
+---
+
+### 2. **Merge Sort**
+**Brief Description**:
+A **divide-and-conquer** sorting algorithm that recursively splits the array into halves, sorts them, and merges them back.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+
+void merge(std::vector<int>& arr, int left, int mid, int right) {
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+    std::vector<int> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+}
+
+void mergeSort(std::vector<int>& arr, int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+int main() {
+    std::vector<int> arr = {12, 11, 13, 5, 6, 7};
+    mergeSort(arr, 0, arr.size() - 1);
+    for (int num : arr) std::cout << num << " ";
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(n log n) (always divides the array in half).
+- **Space**: O(n) (auxiliary space for merging).
+
+**Example Use Case**:
+Sorting a large dataset (e.g., 10 million numbers) where stability is required.
+
+---
+
+### 3. **Dijkstra’s Shortest Path**
+**Brief Description**:
+Finds the shortest path from a source node to all other nodes in a **weighted graph** with non-negative edges.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <climits>
+
+using namespace std;
+
+void dijkstra(const vector<vector<pair<int, int>>>& graph, int src) {
+    int V = graph.size();
+    vector<int> dist(V, INT_MAX);
+    dist[src] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, src});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        for (const auto& edge : graph[u]) {
+            int v = edge.first;
+            int weight = edge.second;
+            if (dist[v] > dist[u] + weight) {
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
+            }
+        }
+    }
+
+    cout << "Vertex \t Distance from Source\n";
+    for (int i = 0; i < V; i++) {
+        cout << i << " \t\t " << dist[i] << endl;
+    }
+}
+
+int main() {
+    vector<vector<pair<int, int>>> graph = {
+        {{1, 4}, {2, 1}},
+        {{3, 1}},
+        {{1, 2}, {3, 5}},
+        {{4, 3}},
+        {}
+    };
+    dijkstra(graph, 0);
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O((V + E) log V) (using a priority queue).
+- **Space**: O(V) (distance array and priority queue).
+
+**Example Use Case**:
+Finding the fastest route in a GPS navigation system.
+
+---
+
+### 4. **Knapsack Problem (Dynamic Programming)**
+**Brief Description**:
+Solves the **0/1 knapsack problem** where items have weights and values, and the goal is to maximize value without exceeding capacity.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int knapsack(int W, const vector<int>& wt, const vector<int>& val, int n) {
+    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= W; w++) {
+            if (wt[i - 1] <= w) {
+                dp[i][w] = max(val[i - 1] + dp[i - 1][w - wt[i - 1]], dp[i - 1][w]);
+            } else {
+                dp[i][w] = dp[i - 1][w];
+            }
+        }
+    }
+    return dp[n][W];
+}
+
+int main() {
+    vector<int> val = {60, 100, 120};
+    vector<int> wt = {10, 20, 30};
+    int W = 50;
+    int n = val.size();
+    cout << "Maximum value: " << knapsack(W, wt, val, n) << endl;
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(nW) (pseudo-polynomial, where W is capacity).
+- **Space**: O(nW) (DP table).
+
+**Example Use Case**:
+Optimizing cargo loading in logistics.
+
+---
+
+### 5. **Depth-First Search (DFS)**
+**Brief Description**:
+Traverses a graph **depth-first**, exploring as far as possible along each branch before backtracking.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+void dfs(const vector<vector<int>>& graph, int start) {
+    vector<bool> visited(graph.size(), false);
+    stack<int> st;
+    st.push(start);
+
+    while (!st.empty()) {
+        int node = st.top();
+        st.pop();
+
+        if (!visited[node]) {
+            cout << node << " ";
+            visited[node] = true;
+            for (int neighbor : graph[node]) {
+                if (!visited[neighbor]) {
+                    st.push(neighbor);
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    vector<vector<int>> graph = {
+        {1, 2},
+        {0, 3, 4},
+        {0, 5},
+        {1},
+        {1, 5},
+        {2, 4}
+    };
+    dfs(graph, 0);
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(V + E) (visits every node and edge once).
+- **Space**: O(V) (stack and visited array).
+
+**Example Use Case**:
+Detecting cycles in a social network graph.
+
+---
+
+### 6. **Quick Sort**
+**Brief Description**:
+A **divide-and-conquer** sorting algorithm that picks a pivot and partitions the array into two subarrays.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int partition(vector<int>& arr, int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void quickSort(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    vector<int> arr = {10, 7, 8, 9, 1, 5};
+    quickSort(arr, 0, arr.size() - 1);
+    for (int num : arr) cout << num << " ";
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(n log n) average, O(n²) worst-case (if pivot is poorly chosen).
+- **Space**: O(log n) (recursion stack).
+
+**Example Use Case**:
+Sorting a large dataset where average-case performance matters.
+
+---
+
+### 7. **Floyd-Warshall Algorithm**
+**Brief Description**:
+Computes the **shortest paths between all pairs of nodes** in a weighted graph (handles negative weights).
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+void floydWarshall(vector<vector<int>>& graph) {
+    int V = graph.size();
+    vector<vector<int>> dist = graph;
+
+    for (int k = 0; k < V; k++) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX) {
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+    }
+
+    cout << "Shortest distances between every pair of vertices:\n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (dist[i][j] == INT_MAX) cout << "INF ";
+            else cout << dist[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+int main() {
+    vector<vector<int>> graph = {
+        {0, 5, INT_MAX, 10},
+        {INT_MAX, 0, 3, INT_MAX},
+        {INT_MAX, INT_MAX, 0, 1},
+        {INT_MAX, INT_MAX, INT_MAX, 0}
+    };
+    floydWarshall(graph);
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(V³) (three nested loops).
+- **Space**: O(V²) (distance matrix).
+
+**Example Use Case**:
+Finding the shortest path in a flight route network.
+
+---
+
+### 8. **Longest Common Subsequence (LCS)**
+**Brief Description**:
+Finds the **longest subsequence** present in two sequences in the same order (not necessarily contiguous).
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int lcs(const string& X, const string& Y) {
+    int m = X.size(), n = Y.size();
+    vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+
+    for (int i = 1; i <= m; i++) {
+        for (int j = 1; j <= n; j++) {
+            if (X[i - 1] == Y[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+    return dp[m][n];
+}
+
+int main() {
+    string X = "AGGTAB";
+    string Y = "GXTXAYB";
+    cout << "Length of LCS: " << lcs(X, Y) << endl;
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(mn) (filling a DP table).
+- **Space**: O(mn) (DP table).
+
+**Example Use Case**:
+DNA sequence alignment in bioinformatics.
+
+---
+
+### 9. **Topological Sort (Kahn’s Algorithm)**
+**Brief Description**:
+Orders nodes in a **directed acyclic graph (DAG)** such that every node comes before the nodes it points to.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+vector<int> topologicalSort(const vector<vector<int>>& graph) {
+    int V = graph.size();
+    vector<int> inDegree(V, 0);
+    for (int u = 0; u < V; u++) {
+        for (int v : graph[u]) {
+            inDegree[v]++;
+        }
+    }
+
+    queue<int> q;
+    for (int i = 0; i < V; i++) {
+        if (inDegree[i] == 0) {
+            q.push(i);
+        }
+    }
+
+    vector<int> result;
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        result.push_back(u);
+
+        for (int v : graph[u]) {
+            if (--inDegree[v] == 0) {
+                q.push(v);
+            }
+        }
+    }
+
+    if (result.size() != V) {
+        cout << "Graph has a cycle!" << endl;
+        return {};
+    }
+    return result;
+}
+
+int main() {
+    vector<vector<int>> graph = {
+        {1, 2},
+        {3},
+        {3},
+        {4},
+        {}
+    };
+    vector<int> sorted = topologicalSort(graph);
+    for (int node : sorted) cout << node << " ";
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(V + E) (visiting each node and edge once).
+- **Space**: O(V) (in-degree array and queue).
+
+**Example Use Case**:
+Task scheduling (e.g., build systems like Make).
+
+---
+
+### 10. **Kadane’s Algorithm (Maximum Subarray)**
+**Brief Description**:
+Finds the **contiguous subarray** with the largest sum in an array of integers.
+
+**C++ Implementation**:
+```cpp
+#include <iostream>
+#include <vector>
+#include <climits>
+
+using namespace std;
+
+int maxSubarraySum(const vector<int>& nums) {
+    int maxSoFar = INT_MIN, maxEndingHere = 0;
+    for (int num : nums) {
+        maxEndingHere += num;
+        if (maxSoFar < maxEndingHere) {
+            maxSoFar = maxEndingHere;
+        }
+        if (maxEndingHere < 0) {
+            maxEndingHere = 0;
+        }
+    }
+    return maxSoFar;
+}
+
+int main() {
+    vector<int> nums = {-2, -3, 4, -1, -2, 1, 5, -3};
+    cout << "Maximum subarray sum: " << maxSubarraySum(nums) << endl;
+    return 0;
+}
+```
+
+**Complexity Analysis**:
+- **Time**: O(n) (single pass through the array).
+- **Space**: O(1) (constant extra space).
+
+**Example Use Case**:
+Analyzing stock market trends (maximum profit over a period).
+
+---
+
+These examples cover a broad range of algorithmic techniques and applications.

@@ -1,0 +1,636 @@
+Here are **10 diverse C++ algorithm examples**, each with the requested structure: **Algorithm Name**, **Brief Description**, **C++ Implementation**, **Time and Space Complexity Analysis**, and **Example Use Case**.
+
+---
+
+### 1. **Bubble Sort**
+
+**Brief Description**  
+A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process is repeated until the list is sorted.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}
+
+int main() {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    bubbleSort(arr, n);
+
+    cout << "Sorted array: \n";
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n²) in the worst and average case, O(n) in the best case (already sorted).  
+- **Space Complexity**: O(1) (in-place sorting).
+
+**Example Use Case**  
+Sorting a small list of integers in a program, such as a to-do list or a list of scores.
+
+---
+
+### 2. **Binary Search**
+
+**Brief Description**  
+A search algorithm that works on a sorted array by repeatedly dividing the search interval in half. It is efficient for finding an item in a sorted list.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+int binarySearch(int arr[], int size, int target) {
+    int left = 0;
+    int right = size - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (arr[mid] == target)
+            return mid;
+
+        if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+
+    return -1;
+}
+
+int main() {
+    int arr[] = {2, 5, 8, 12, 15, 23, 38, 46, 63};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    int target = 23;
+
+    int result = binarySearch(arr, size, target);
+
+    if (result == -1)
+        cout << "Element not found.";
+    else
+        cout << "Element found at index: " << result << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(log n) in the average and best case, O(n) in the worst case (if the array is not sorted).  
+- **Space Complexity**: O(1) (recursive version), O(log n) (iterative version due to loop depth).
+
+**Example Use Case**  
+Searching for a specific value in a sorted list of numbers, such as in a database or a file.
+
+---
+
+### 3. **Dijkstra's Algorithm (Priority Queue)**
+
+**Brief Description**  
+An algorithm for finding the shortest path from a single source to all other nodes in a weighted graph. It uses a priority queue to always expand the node with the smallest tentative distance.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
+using namespace std;
+
+void dijkstra(int graph[], int source, int n) {
+    vector<int> dist(n, numeric_limits<int>::max());
+    dist[source] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, source});
+
+    while (!pq.empty()) {
+        int currentDist = pq.top().first;
+        int currentNode = pq.top().second;
+        pq.pop();
+
+        if (currentDist > dist[currentNode])
+            continue;
+
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (graph[currentNode][neighbor] > 0 && dist[neighbor] > dist[currentNode] + graph[currentNode][neighbor]) {
+                dist[neighbor] = dist[currentNode] + graph[currentNode][neighbor];
+                pq.push({dist[neighbor], neighbor});
+            }
+        }
+    }
+
+    cout << "Shortest paths from node " << source << ":\n";
+    for (int i = 0; i < n; i++) {
+        cout << i << " -> " << source << " with distance " << dist[i] << endl;
+    }
+}
+
+int main() {
+    int graph[] = {
+        {0, 1, 1, 0, 0},
+        {1, 0, 0, 1, 2},
+        {1, 0, 0, 0, 0},
+        {0, 1, 0, 0, 1},
+        {0, 2, 0, 1, 0}
+    };
+    int source = 0;
+    int n = sizeof(graph) / sizeof(graph[0]);
+
+    dijkstra(graph, source, n);
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(E log V), where E is the number of edges and V is the number of vertices.  
+- **Space Complexity**: O(V) for the priority queue and distance array.
+
+**Example Use Case**  
+Finding the shortest path in a network (e.g., road network or internet routing).
+
+---
+
+### 4. **Floyd-Warshall Algorithm**
+
+**Brief Description**  
+An algorithm for finding the shortest paths between all pairs of nodes in a weighted graph. It uses dynamic programming and updates the shortest path matrix iteratively.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void floydWarshall(int graph[], int n) {
+    vector<vector<int>> dist(n, vector<int>(n, numeric_limits<int>::max()));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            dist[i][j] = graph[i][j];
+        }
+    }
+
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+
+    cout << "Shortest paths:\n";
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << i << " -> " << j << " with distance " << dist[i][j] << endl;
+        }
+    }
+}
+
+int main() {
+    int graph[] = {
+        {0, 3, 0, 5, 0},
+        {3, 0, 2, 0, 1},
+        {0, 2, 0, 0, 4},
+        {5, 0, 0, 0, 2},
+        {0, 1, 4, 2, 0}
+    };
+    int n = sizeof(graph) / sizeof(graph[0]);
+
+    floydWarshall(graph, n);
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n³)  
+- **Space Complexity**: O(n²) for the distance matrix
+
+**Example Use Case**  
+Finding the shortest path between all pairs of cities in a travel network.
+
+---
+
+### 5. **Knuth-Morris-Pratt (KMP) Algorithm**
+
+**Brief Description**  
+A string-matching algorithm that uses a precomputed "failure function" to avoid unnecessary comparisons, making it efficient for large text.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> computeFailureFunction(string text, string pattern) {
+    int n = text.length();
+    int m = pattern.length();
+    vector<int> lps(m, 0);
+    int length = 0;
+
+    for (int i = 1; i < m; i++) {
+        while (length > 0 && pattern[i] != pattern[length]) {
+            length = lps[length - 1];
+        }
+        if (pattern[i] == pattern[length])
+            length++;
+        lps[i] = length;
+    }
+
+    return lps;
+}
+
+int kmpSearch(string text, string pattern) {
+    int n = text.length();
+    int m = pattern.length();
+    vector<int> lps = computeFailureFunction(text, pattern);
+    int i = 0, j = 0;
+
+    while (i < n) {
+        if (text[i] == pattern[j]) {
+            i++;
+            j++;
+        }
+
+        if (j == m) {
+            return i - j; // Found the pattern
+        } else if (i < n && text[i] != pattern[j]) {
+            if (j != 0)
+                j = lps[j - 1];
+            else
+                i++;
+        }
+    }
+
+    return -1; // Pattern not found
+}
+
+int main() {
+    string text = "ABABABABABABABABAB";
+    string pattern = "ABABAB";
+    int result = kmpSearch(text, pattern);
+
+    if (result != -1)
+        cout << "Pattern found at index: " << result << endl;
+    else
+        cout << "Pattern not found." << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n + m)  
+- **Space Complexity**: O(m) for the failure function
+
+**Example Use Case**  
+Searching for a substring in a large text, such as in a search engine or a log file.
+
+---
+
+### 6. **Dynamic Programming – Fibonacci Sequence**
+
+**Brief Description**  
+A classic dynamic programming problem where the solution to a problem is built from the solutions to smaller subproblems. It is used to compute Fibonacci numbers efficiently.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if (n <= 1)
+        return n;
+    int a = 0, b = 1;
+    for (int i = 2; i <= n; i++) {
+        int c = a + b;
+        a = b;
+        b = c;
+    }
+    return b;
+}
+
+int main() {
+    int n = 10;
+    cout << "Fibonacci number at position " << n << " is: " << fibonacci(n) << endl;
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n)  
+- **Space Complexity**: O(1) (iterative version)
+
+**Example Use Case**  
+Computing Fibonacci numbers in a mathematical or financial application.
+
+---
+
+### 7. **Merge Sort**
+
+**Brief Description**  
+A divide-and-conquer algorithm that divides the array into two halves, recursively sorts them, and merges the sorted halves.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+void merge(int arr[], int l, int m, int r) {
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    int L[n1], R[n2];
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (int j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    int i = 0, j = 0, k = l;
+
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k++] = L[i++];
+        } else {
+            arr[k++] = R[j++];
+        }
+    }
+
+    while (i < n1) {
+        arr[k++] = L[i++];
+    }
+
+    while (j < n2) {
+        arr[k++] = R[j++];
+    }
+}
+
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
+
+int main() {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    mergeSort(arr, 0, n - 1);
+
+    cout << "Sorted array: \n";
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n log n)  
+- **Space Complexity**: O(n) (for the temporary arrays)
+
+**Example Use Case**  
+Sorting a large dataset in a database or a file.
+
+---
+
+### 8. **QuickSort**
+
+**Brief Description**  
+A divide-and-conquer algorithm that selects a 'pivot' element and partitions the array into elements less than, equal to, and greater than the pivot. It then recursively sorts the partitions.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+void swap(int* a, int* b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return i + 1;
+}
+
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5, 6};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    quickSort(arr, 0, n - 1);
+
+    cout << "Sorted array: \n";
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+    cout << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(n log n) on average, O(n²) in the worst case (e.g., already sorted array).  
+- **Space Complexity**: O(log n) due to recursion stack
+
+**Example Use Case**  
+Sorting a list of integers in a user interface or a game.
+
+---
+
+### 9. **Breadth-First Search (BFS)**
+
+**Brief Description**  
+An algorithm for traversing or searching a graph, starting from a given node and visiting all adjacent nodes at the present depth level before moving on to nodes at the next depth level.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+void bfs(int graph[], int source, int n) {
+    vector<bool> visited(n, false);
+    queue<int> q;
+    q.push(source);
+    visited[source] = true;
+
+    while (!q.empty()) {
+        int current = q.front();
+        q.pop();
+
+        cout << current << " ";
+
+        for (int neighbor = 0; neighbor < n; neighbor++) {
+            if (graph[current][neighbor] > 0 && !visited[neighbor]) {
+                visited[neighbor] = true;
+                q.push(neighbor);
+            }
+        }
+    }
+}
+
+int main() {
+    int graph[] = {
+        {0, 1, 0, 0, 0},
+        {1, 0, 0, 1, 0},
+        {0, 0, 0, 0, 1},
+        {0, 1, 0, 0, 0},
+        {0, 0, 1, 0, 0}
+    };
+    int source = 0;
+    int n = sizeof(graph) / sizeof(graph[0]);
+
+    cout << "BFS traversal starting from node " << source << ":\n";
+    bfs(graph, source, n);
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(V + E)  
+- **Space Complexity**: O(V) for the visited array and queue
+
+**Example Use Case**  
+Finding the shortest path in an unweighted graph, such as in a social network or a map.
+
+---
+
+### 10. **Binary Indexed Tree (Fenwick Tree)**
+
+**Brief Description**  
+A data structure that allows efficient prefix sum queries and point updates. It is used in applications where we need to perform these operations quickly.
+
+**C++ Implementation**
+```cpp
+#include <iostream>
+using namespace std;
+
+class FenwickTree {
+private:
+    int* tree;
+    int size;
+
+public:
+    FenwickTree(int size) {
+        this->size = size;
+        tree = new int[size + 1];
+        for (int i = 0; i <= size; i++) {
+            tree[i] = 0;
+        }
+    }
+
+    void update(int index, int value) {
+        while (index <= size) {
+            tree[index] += value;
+            index += index & -index;
+        }
+    }
+
+    int query(int index) {
+        int sum = 0;
+        while (index > 0) {
+            sum += tree[index];
+            index -= index & -index;
+        }
+        return sum;
+    }
+
+    int rangeQuery(int l, int r) {
+        return query(r) - query(l - 1);
+    }
+
+    void deleteElement(int index) {
+        update(index, -1);
+    }
+
+    void printTree() {
+        for (int i = 1; i <= size; i++)
+            cout << tree[i] << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    int size = 10;
+    FenwickTree ft(size);
+
+    ft.update(1, 1);
+    ft.update(2, 2);
+    ft.update(3, 3);
+    ft.update(4, 4);
+    ft.update(5, 5);
+    ft.update(6, 6);
+    ft.update(7, 7);
+    ft.update(8, 8);
+    ft.update(9, 9);
+    ft.update(10, 10);
+
+    cout << "Initial tree: ";
+    ft.printTree();
+
+    ft.deleteElement(5);
+    cout << "After deleting element 5: ";
+    ft.printTree();
+
+    cout << "Sum from 1 to 5: " << ft.rangeQuery(1, 5) << endl;
+    cout << "Sum from 6 to 10: " << ft.rangeQuery(6, 10) << endl;
+
+    return 0;
+}
+```
+
+**Time and Space Complexity Analysis**  
+- **Time Complexity**: O(log n) for both update and query operations.  
+- **Space Complexity**: O(n) for the tree array
+
+**Example Use Case**  
+Maintaining a dynamic frequency count, such as in a game where you track scores or in a database where you need to query ranges efficiently.
+
+---
+
+Let me know if you'd like these algorithms implemented in a specific language or with additional features!

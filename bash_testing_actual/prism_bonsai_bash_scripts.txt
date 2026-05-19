@@ -1,0 +1,345 @@
+Here are **10 diverse Bash scripting examples**, each with the requested structure:
+
+---
+
+### 1. **Script Name**: `find_and_delete_old_files.sh`  
+**Brief Description**: Deletes files older than 7 days in a specified directory.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Check if a directory is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <directory>"
+    exit 1
+fi
+
+# Check if the directory exists
+if [ ! -d "$1" ]; then
+    echo "Directory not found: $1"
+    exit 1
+fi
+
+# Find files older than 7 days and delete them
+find "$1" -type f -mtime +7 -exec rm -f {} \;
+
+# Optional: Print the files that were deleted
+# find "$1" -type f -mtime +7 -exec echo {} \; 2>/dev/null
+```
+**Explanation of How It Works**:  
+- The script takes a directory as an argument.  
+- It checks if the directory exists and if the argument is provided.  
+- It uses `find` to locate files older than 7 days (`-mtime +7`) and deletes them with `rm -f`.  
+- Optionally, it can print the names of the deleted files.  
+**Example Use Case**:  
+- Clean up old log files or temporary files in a project directory.
+
+---
+
+### 2. **Script Name**: `backup_database.sh`  
+**Brief Description**: Backs up a MySQL database to a specified location.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Database configuration
+DB_NAME="mydatabase"
+USER="root"
+PASS="securepassword"
+BACKUP_DIR="/backup/mydb"
+
+# Check if the backup directory exists
+if [ ! -d "$BACKUP_DIR" ]; then
+    echo "Backup directory not found: $BACKUP_DIR"
+    exit 1
+fi
+
+# Create a timestamp for the backup
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="$BACKUP_DIR/$DB_NAME-$TIMESTAMP.sql"
+
+# Backup the database
+mysqldump -u "$USER" -p"$PASS" "$DB_NAME" > "$BACKUP_FILE"
+
+# Check if the backup was successful
+if [ $? -eq 0 ]; then
+    echo "Backup completed successfully: $BACKUP_FILE"
+else
+    echo "Backup failed."
+    exit 1
+fi
+```
+**Explanation of How It Works**:  
+- Uses `mysqldump` to export the database to a SQL file.  
+- Creates a timestamped filename for the backup.  
+- Validates the backup directory and checks the exit code of the command.  
+**Example Use Case**:  
+- Automate database backups for production or development environments.
+
+---
+
+### 3. **Script Name**: `validate_credentials.sh`  
+**Brief Description**: Validates user credentials against a predefined list.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# List of valid users
+VALID_USERS=("user1 user2 admin user3")
+
+# Prompt for username and password
+read -p "Enter username: " USER
+read -p "Enter password: " PASS
+
+# Check if the username is valid
+if [[ " ${VALID_USERS[@]} " =~ "$USER" ]]; then
+    echo "Username is valid."
+    echo "Password is valid."
+else
+    echo "Invalid username or password."
+    exit 1
+fi
+```
+**Explanation of How It Works**:  
+- Defines a list of valid users.  
+- Prompts the user for their username and password.  
+- Uses a regular expression to check if the username is in the list.  
+**Example Use Case**:  
+- Securely authenticate users for a script or application.
+
+---
+
+### 4. **Script Name**: `process_logs.sh`  
+**Brief Description**: Processes log files to count errors and warnings.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Log file path
+LOG_FILE="/var/log/app.log"
+
+# Check if the log file exists
+if [ ! -f "$LOG_FILE" ]; then
+    echo "Log file not found: $LOG_FILE"
+    exit 1
+fi
+
+# Count errors and warnings
+ERROR_COUNT=$(grep -i "error" "$LOG_FILE" | wc -l)
+WARNING_COUNT=$(grep -i "warning" "$LOG_FILE" | wc -l)
+
+# Display the results
+echo "Total errors: $ERROR_COUNT"
+echo "Total warnings: $WARNING_COUNT"
+```
+**Explanation of How It Works**:  
+- Uses `grep` with `-i` to match case-insensitive patterns.  
+- Counts the number of matches using `wc -l`.  
+- Outputs the counts for errors and warnings.  
+**Example Use Case**:  
+- Monitor system or application logs for issues.
+
+---
+
+### 5. **Script Name**: `start_service.sh`  
+**Brief Description**: Starts a specified service using systemd.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Service name
+SERVICE_NAME="nginx"
+
+# Check if systemd is installed
+if ! command -v systemd &> /dev/null; then
+    echo "Systemd is not installed. Cannot start service."
+    exit 1
+fi
+
+# Start the service
+sudo systemctl start "$SERVICE_NAME"
+
+# Check if the service is running
+if systemctl status "$SERVICE_NAME" = active; then
+    echo "Service '$SERVICE_NAME' started successfully."
+else
+    echo "Service '$SERVICE_NAME' failed to start."
+    exit 1
+fi
+```
+**Explanation of How It Works**:  
+- Checks for the presence of systemd.  
+- Uses `systemctl start` to start the service.  
+- Verifies if the service is active using `systemctl status`.  
+**Example Use Case**:  
+- Automate the start of a web server or application service.
+
+---
+
+### 6. **Script Name**: `ping_all_hosts.sh`  
+**Brief Description**: Pings all hosts in a specified list and displays results.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# List of hosts to ping
+HOSTS=("192.168.1.1 192.168.1.2 192.168.1.3")
+
+# Check if the ping command is available
+if ! command -v ping &> /dev/null; then
+    echo "Ping command is not available. Cannot ping hosts."
+    exit 1
+fi
+
+# Ping each host and display results
+for HOST in "${HOSTS[@]}"; do
+    echo "Pinging $HOST..."
+    ping -c 1 "$HOST" | grep -q "64 bytes" || echo "Host $HOST is unreachable."
+done
+```
+**Explanation of How It Works**:  
+- Iterates through a list of hosts.  
+- Uses `ping -c 1` to send a single ping.  
+- Checks if the ping response includes "64 bytes" (common in unreachable hosts).  
+**Example Use Case**:  
+- Verify connectivity to a set of servers or devices.
+
+---
+
+### 7. **Script Name**: `generate_report.sh`  
+**Brief Description**: Generates a report with system metrics.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Generate a report with system metrics
+echo "System Metrics Report" > /tmp/system_report.txt
+
+# Add CPU usage
+echo "CPU Usage:" >> /tmp/system_report.txt
+uptime | awk '{print $1, $2}' >> /tmp/system_report.txt
+
+# Add memory usage
+echo "Memory Usage:" >> /tmp/system_report.txt
+free | awk '/Mem:/ {printf "%s: %s\n", $2, $3}' >> /tmp/system_report.txt
+
+# Add disk usage
+echo "Disk Usage:" >> /tmp/system_report.txt
+df -h >> /tmp/system_report.txt
+
+# Add network usage
+echo "Network Usage:" >> /tmp/system_report.txt
+if ! command -v nethogs &> /dev/null; then
+    echo "nethogs not found. Cannot check network usage."
+    exit 1
+fi
+nethogs | awk '/bytes:/ {printf "%s: %s\n", $1, $2}' >> /tmp/system_report.txt
+
+# Output the report
+cat /tmp/system_report.txt
+```
+**Explanation of How It Works**:  
+- Writes system metrics to a text file.  
+- Uses `uptime`, `free`, `df`, and `nethogs` to gather data.  
+- Outputs the report to the terminal.  
+**Example Use Case**:  
+- Generate a system health report for administrators.
+
+---
+
+### 8. **Script Name**: `automate_git_commit.sh`  
+**Brief Description**: Automates a Git commit with a message.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Git repository path
+REPO="/path/to/repo"
+
+# Check if Git is installed
+if ! command -v git &> /dev/null; then
+    echo "Git is not installed. Cannot commit."
+    exit 1
+fi
+
+# Check if we are in a Git repository
+if ! git rev-parse --verify HEAD; then
+    echo "Not in a Git repository."
+    exit 1
+fi
+
+# Commit changes with a message
+echo "Current changes: $git diff --cached"
+git commit -m "Automated commit by script"
+
+# Optional: Push changes to a remote repository
+# git push origin main
+```
+**Explanation of How It Works**:  
+- Checks for Git installation and whether the user is in a Git repository.  
+- Uses `git diff --cached` to show changes.  
+- Commits the changes with a message.  
+**Example Use Case**:  
+- Automate a Git commit for continuous integration or deployment.
+
+---
+
+### 9. **Script Name**: `check_disk_space.sh`  
+**Brief Description**: Checks disk space usage and alerts if it's below a threshold.  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Disk space threshold (in %)
+THRESHOLD=20
+
+# Check disk space for / and /home
+for DIR in "/ /home"; do
+    echo "Checking disk space for $DIR:"
+    df -h "$DIR" | grep -q "100%" || continue
+    echo "Disk space is below $THRESHOLD% threshold."
+    echo "Free space: $(df -h "$DIR" | grep "Free" | awk '{print $2}')"
+    echo "Used space: $(df -h "$DIR" | grep "Used" | awk '{print $2}')"
+    echo "Total space: $(df -h "$DIR" | grep "Total" | awk '{print $2}')"
+    echo "-----------------------------"
+done
+```
+**Explanation of How It Works**:  
+- Iterates through `/` and `/home` directories.  
+- Uses `df -h` to display disk usage in human-readable format.  
+- Checks if any directory has less than 20% free space.  
+**Example Use Case**:  
+- Monitor disk space usage and alert administrators when it's low.
+
+---
+
+### 10. **Script Name**: `list_files_by_type.sh`  
+**Brief Description**: Lists files in a directory by their type (e.g., executable, directory, etc.).  
+**Bash Implementation**:
+```bash
+#!/bin/bash
+
+# Directory to search
+DIR="/var/www"
+
+# Check if the directory exists
+if [ ! -d "$DIR" ]; then
+    echo "Directory not found: $DIR"
+    exit 1
+fi
+
+# List files by type
+echo "Files by type:"
+find "$DIR" -type f -exec file -p {} \; | awk '{print $1, $2}' | sort -k2,2 | uniq -k2
+```
+**Explanation of How It Works**:  
+- Uses `find` to locate files.  
+- Executes `file -p` to determine the file type.  
+- Uses `awk` to extract the type and filename.  
+- Sorts and deduplicates the output.  
+**Example Use Case**:  
+- Quickly identify file types in a directory for security or management purposes.
+
+---
+
+Let me know if you'd like these scripts to be made into functions, integrated into a larger system, or adapted for specific environments (e.g., Docker, cloud, etc.).

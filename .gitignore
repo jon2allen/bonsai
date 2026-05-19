@@ -1,0 +1,14 @@
+# Object files
+*.o
+*.obj
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Other common build artifacts
+*.exe
+*.dll
+*.so
+*.a
+*.lib

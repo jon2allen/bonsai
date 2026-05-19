@@ -1,0 +1,23 @@
+# ChatDSL script to generate a Pascal Binary Tree program
+set filename = "binary_tree.pas"
+set model = "prism_bonsai"
+
+/model ${model}
+
+/multiline
+Please write a complete Free Pascal (FPC) program that implements a Binary Search Tree.
+The program should include:
+1. A record type for the Node.
+2. A recursive Insert function.
+3. A function to perform In-order Traversal.
+4. A simple main block to demonstrate the tree.
+;;
+/multiline
+/save ./pascal2/${filename}
+
+Create a README.txt file for the binary tree program.
+Explain how to compile it using: fpc ${filename}
+;;
+
+/save ./pascal2/"README.txt"
+/quit
