@@ -1,0 +1,43 @@
+Here’s the **final verdict** based on the **needle-in-haystack analysis** (not the general-purpose scoring from earlier, which was a separate evaluation):
+
+---
+
+### **1. Which model was better at finding the needle in the haystack?**
+✅ **prism_bonsai** performed **significantly better**.
+- It returned **only the exact line** (`easy_key: 8081C452-F5C9-4938-A00A-EB91A0DA71D4`) with no extra text.
+- Adhered perfectly to the expected format.
+
+❌ **mistral_1** was less precise:
+- Included an extra line (`"The correct easy_key is: ..."`).
+- Omitted the `easy_key:` prefix in its direct response.
+
+---
+
+### **2. Did both models find the correct easy_key?**
+✅ **Yes**, both correctly identified the key:
+`8081C452-F5C9-4938-A00A-EB91A0DA71D4`.
+
+---
+
+### **3. Did either model return extra text beyond just the easy_key line?**
+✅ **Only mistral_1** added unnecessary text.
+- **prism_bonsai**: Returned **only** the target line.
+- **mistral_1**: Added explanatory text, reducing precision.
+
+---
+
+### **4. Overall Assessment of Needle-in-Haystack Capabilities**
+| **Metric**       | **prism_bonsai** | **mistral_1**       | **Winner**      |
+|------------------|------------------|---------------------|-----------------|
+| **Accuracy**     | 10/10            | 10/10               | Tie             |
+| **Precision**    | 10/10            | 5/10                | **prism_bonsai**|
+| **Format**       | Perfect          | Inconsistent        | **prism_bonsai**|
+| **Extra Noise**  | None             | Added text          | **prism_bonsai**|
+
+**Key Takeaway**:
+- **prism_bonsai** is the **clear winner** for strict, format-sensitive tasks like needle-in-haystack searches.
+- **mistral_1** is accurate but less precise, making it better suited for general Q&A where extra context is acceptable.
+
+---
+### **Final Answer**
+For **needle-in-haystack tasks**, **prism_bonsai is the superior model** due to its **higher precision and strict adherence to format**. Mistral_1 is accurate but less disciplined in output structure.
