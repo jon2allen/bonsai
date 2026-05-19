@@ -1,0 +1,502 @@
+Here are **10 diverse Pascal algorithm examples**, each with the requested structure:
+
+---
+
+### 1. **Bubble Sort**
+**Brief Description**: A simple sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This process is repeated until the list is sorted.
+
+**Pascal Implementation**:
+```pascal
+program BubbleSort;
+var
+  n, i, j, temp: integer;
+begin
+  n := 10;
+  for i := 0 to n - 1 do
+  begin
+    for j := 0 to n - i - 2 do
+    begin
+      if arr[j] > arr[j + 1] then
+      begin
+        arr[j], arr[j + 1] := arr[j + 1], arr[j];
+      end;
+    end;
+  end;
+  writeln('Sorted array:');
+  for i := 0 to n - 1 do
+    writeln(arr[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(n²) in the worst and average cases, O(n) in the best case (already sorted).
+- **Space Complexity**: O(1) (in-place sorting).
+
+**Example Use Case**: Sorting small arrays of integers in a student gradebook.
+
+---
+
+### 2. **Linear Search**
+**Brief Description**: A simple search algorithm that checks each element of a list sequentially until the desired element is found or the list is exhausted.
+
+**Pascal Implementation**:
+```pascal
+program LinearSearch;
+var
+  n, i, target: integer;
+  arr: array[1..n] of integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Enter the element to search:');
+  readln(target);
+  for i := 1 to n do
+  begin
+    if arr[i] = target then
+    begin
+      writeln('Element found at index ', i);
+      exit;
+    end;
+  end;
+  writeln('Element not found.');
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(n) in the worst and average cases, O(1) in the best case (element found at first position).
+- **Space Complexity**: O(1) (no extra space used).
+
+**Example Use Case**: Searching for a student's name in a list of student records.
+
+---
+
+### 3. **Dijkstra's Algorithm (Graph Shortest Path)**
+**Brief Description**: A graph algorithm that finds the shortest path from a starting node to all other nodes in a weighted graph, assuming all weights are non-negative.
+
+**Pascal Implementation**:
+```pascal
+program Dijkstra;
+var
+  n, i, j, dist: array[1..n] of integer;
+  adj: array[1..n] of array[1..n] of integer;
+  visited: array[1..n] of boolean;
+  priorityQueue: array[1..10] of integer;
+  key: integer;
+  count: integer;
+begin
+  n := 5;
+  adj[1..5] := [
+    [0, 1, 0, 0, 0],
+    [1, 0, 2, 0, 0],
+    [0, 2, 0, 3, 0],
+    [0, 0, 3, 0, 4],
+    [0, 0, 0, 4, 0]
+  ];
+  dist[1..5] := [0, infinity, infinity, infinity, infinity];
+  visited[1..5] := [false, false, false, false, false];
+  count := 0;
+  key := 1;
+  priorityQueue[1] := key;
+  repeat
+    key := 0;
+    for i := 1 to n do
+      if not visited[i] and dist[i] < key then
+        key := dist[i];
+    if key = 0 then break;
+    visited[key] := true;
+    count := count + 1;
+    for i := 1 to n do
+      if not visited[i] and adj[key][i] > 0 then
+        if dist[i] > dist[key] + adj[key][i] then
+          dist[i] := dist[key] + adj[key][i];
+    for i := 1 to n do
+      priorityQueue[i] := dist[i];
+  until count = n;
+  writeln('Shortest paths from node 1:');
+  for i := 1 to n do
+    writeln('To ', i, ': ', dist[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(V log V + E), where V is the number of vertices and E is the number of edges.
+- **Space Complexity**: O(V + E) (for adjacency matrix and priority queue).
+
+**Example Use Case**: Finding the shortest route between cities in a map using Dijkstra's algorithm.
+
+---
+
+### 4. **Fibonacci Sequence (Recursive)**
+**Brief Description**: A recursive algorithm that computes the nth Fibonacci number using the definition F(n) = F(n-1) + F(n-2).
+
+**Pascal Implementation**:
+```pascal
+program Fibonacci;
+var
+  n: integer;
+  fib: array[1..100] of integer;
+begin
+  n := 10;
+  fib[1] := 0;
+  fib[2] := 1;
+  for i := 3 to n do
+  begin
+    fib[i] := fib[i - 1] + fib[i - 2];
+  end;
+  writeln('Fibonacci sequence up to ', n, ':');
+  for i := 1 to n do
+    writeln(fib[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(2ⁿ) due to repeated calculations.
+- **Space Complexity**: O(n) for storing the sequence.
+
+**Example Use Case**: Generating Fibonacci numbers for a mathematical problem or pattern.
+
+---
+
+### 5. **Dynamic Programming - Fibonacci (Memoization)**
+**Brief Description**: A memoization-based dynamic programming approach to compute the nth Fibonacci number efficiently.
+
+**Pascal Implementation**:
+```pascal
+program FibonacciMemo;
+var
+  n: integer;
+  fib: array[1..100] of integer;
+  memo: array[1..100] of integer;
+begin
+  n := 10;
+  fib[1] := 0;
+  fib[2] := 1;
+  for i := 3 to n do
+  begin
+    if memo[i] = 0 then
+      memo[i] := fib[i - 1] + fib[i - 2];
+    fib[i] := memo[i];
+  end;
+  writeln('Fibonacci sequence up to ', n, ':');
+  for i := 1 to n do
+    writeln(fib[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(n) (each Fibonacci number is computed once).
+- **Space Complexity**: O(n) (for storing the sequence and memoization).
+
+**Example Use Case**: Efficiently computing Fibonacci numbers for a larger input size.
+
+---
+
+### 6. **Binary Search**
+**Brief Description**: A search algorithm that divides the search space in half at each step, making it much faster than linear search for large datasets.
+
+**Pascal Implementation**:
+```pascal
+program BinarySearch;
+var
+  n, low, high, mid, target: integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Enter the element to search:');
+  readln(target);
+  low := 1;
+  high := n;
+  repeat
+    mid := (low + high) div 2;
+    if arr[mid] = target then
+    begin
+      writeln('Element found at index ', mid);
+      exit;
+    end
+    else if arr[mid] < target then
+      low := mid + 1
+    else
+      high := mid - 1;
+  until low > high;
+  writeln('Element not found.');
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(log n) in the average and worst cases.
+- **Space Complexity**: O(1) (no extra space used).
+
+**Example Use Case**: Searching for a specific number in a sorted list of integers.
+
+---
+
+### 7. **Prim's Algorithm (Minimum Spanning Tree)**
+**Brief Description**: A greedy algorithm that builds a minimum spanning tree (MST) for a connected, undirected graph with non-negative edge weights.
+
+**Pascal Implementation**:
+```pascal
+program Prim;
+var
+  n, i, j, minVal, parent: array[1..n] of integer;
+  adj: array[1..n] of array[1..n] of integer;
+  visited: array[1..n] of boolean;
+begin
+  n := 5;
+  adj[1..5] := [
+    [0, 1, 0, 0, 0],
+    [1, 0, 2, 0, 0],
+    [0, 2, 0, 3, 0],
+    [0, 0, 3, 0, 4],
+    [0, 0, 0, 4, 0]
+  ];
+  parent[1] := 0;
+  visited[1] := true;
+  minVal := 0;
+  for i := 1 to n do
+  begin
+    minVal := min(minVal, adj[parent[i]][i]);
+    for j := 1 to n do
+      if not visited[j] and adj[i][j] < minVal then
+        minVal := adj[i][j];
+        parent[j] := i;
+    visited[i] := true;
+  end;
+  writeln('Minimum Spanning Tree edges:');
+  for i := 2 to n do
+    writeln(i, '-', parent[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(E log V), where E is the number of edges and V is the number of vertices.
+- **Space Complexity**: O(V) (for adjacency matrix and parent array).
+
+**Example Use Case**: Building a network with the least cost to connect all nodes.
+
+---
+
+### 8. **Knuth-Morris-Pratt (KMP) Algorithm**
+**Brief Description**: A string-matching algorithm that uses a precomputed "failure function" to avoid unnecessary comparisons, improving performance over naive string matching.
+
+**Pascal Implementation**:
+```pascal
+program KMP;
+var
+  text, pattern, i, j, lps: array[1..10] of integer;
+  len: integer;
+begin
+  text := 'ABABABABC';
+  pattern := 'ABAB';
+  len := length(pattern);
+  lps[1..len] := 0;
+  for i := 2 to len do
+  begin
+    j := 0;
+    while j > 0 and pattern[i] = pattern[j] do
+      j := j - 1;
+    if pattern[i] = pattern[j + 1] then
+      j := j + 1;
+    lps[i] := j;
+  end;
+  i := 1;
+  j := 1;
+  while i <= length(text) do
+  begin
+    if text[i] = pattern[j] then
+    begin
+      writeln('Match at position ', i);
+      i := i + 1;
+      j := j + 1;
+    end
+    else
+    begin
+      if j > 0 then
+        j := lps[j];
+      else
+        i := i + 1;
+    end;
+  end;
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(n + m), where n is the length of the text and m is the length of the pattern.
+- **Space Complexity**: O(m) (for the LPS array).
+
+**Example Use Case**: Efficiently searching for a substring in a large text.
+
+---
+
+### 9. **QuickSort**
+**Brief Description**: A divide-and-conquer algorithm that selects a 'pivot' element and partitions the array into elements less than, equal to, and greater than the pivot. It then recursively sorts the partitions.
+
+**Pascal Implementation**:
+```pascal
+program QuickSort;
+var
+  n, i, j, pivot: integer;
+  arr: array[1..10] of integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Original array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+  pivot := 5;
+  QuickSort(arr, 1, n, pivot);
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end.
+```
+
+**Pascal Implementation (Recursive)**:
+```pascal
+program QuickSort;
+var
+  n, i, j, pivot: integer;
+  arr: array[1..10] of integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  QuickSort(arr, 1, n, 5);
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end;
+```
+
+**Pascal Implementation (Iterative)**:
+```pascal
+program QuickSortIterative;
+var
+  n, i, j, pivot: integer;
+  arr: array[1..10] of integer;
+  left, right: integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Original array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+  pivot := 5;
+  left := 1;
+  right := n;
+  repeat
+    while left < right and arr[left] < pivot do
+      left := left + 1;
+    while left < right and arr[right] > pivot do
+      right := right - 1;
+    if left < right then
+    begin
+      arr[left], arr[right] := arr[right], arr[left];
+      left := left + 1;
+      right := right - 1;
+    end;
+  until left = right;
+  QuickSort(arr, 1, left, pivot);
+  QuickSort(arr, left + 1, right, pivot);
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end.
+```
+
+**Time and Space Complexity Analysis**:
+- **Average Case**: O(n log n)
+- **Worst Case**: O(n²)
+- **Space Complexity**: O(log n) (due to recursion stack)
+
+**Example Use Case**: Sorting a list of integers in a database or application.
+
+---
+
+### 10. **Merge Sort**
+**Brief Description**: A divide-and-conquer algorithm that divides the array into two halves, recursively sorts them, and then merges the sorted halves back together.
+
+**Pascal Implementation**:
+```pascal
+program MergeSort;
+var
+  n, i, j, k: integer;
+  arr: array[1..10] of integer;
+  mid: integer;
+  temp: array[1..10] of integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Original array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+  MergeSort(arr, 1, n, 1);
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end;
+```
+
+**Pascal Implementation (Recursive)**:
+```pascal
+program MergeSort;
+var
+  n, i, j, k: integer;
+  arr: array[1..10] of integer;
+  mid: integer;
+  temp: array[1..10] of integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Original array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+  if n > 1 then
+  begin
+    mid := n div 2;
+    MergeSort(arr, 1, mid, 1);
+    MergeSort(arr, mid + 1, n, 1);
+    Merge(arr, 1, mid, n, 1);
+  end;
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end;
+```
+
+**Pascal Implementation (Iterative)**:
+```pascal
+program MergeSortIterative;
+var
+  n, i, j, k: integer;
+  arr: array[1..10] of integer;
+  temp: array[1..10] of integer;
+  left, right: integer;
+begin
+  n := 10;
+  arr[1..n] := 1..10;
+  writeln('Original array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+  left := 1;
+  right := n;
+  while left < right do
+  begin
+    mid := (left + right) div 2;
+    Merge(arr, left, mid, right, 1);
+    left := left * 2;
+    right := right * 2;
+  end;
+  writeln('Sorted array:');
+  for i := 1 to n do
+    writeln(arr[i]);
+end;
+```
+
+**Time and Space Complexity Analysis**:
+- **Time Complexity**: O(n log n) in all cases.
+- **Space Complexity**: O(n) (for the temporary array).
+
+**Example Use Case**: Sorting large datasets in a file or database.
+
+---
+
+Let me know if you'd like these algorithms implemented in a different language or with additional features!

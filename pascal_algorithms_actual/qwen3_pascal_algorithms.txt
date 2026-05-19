@@ -1,0 +1,584 @@
+Here are 10 diverse Pascal algorithm examples, each structured as requested:
+
+---
+
+### **1. Bubble Sort**
+**Brief Description:**
+A simple comparison-based sorting algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order.
+
+**Pascal Implementation:**
+```pascal
+program BubbleSort;
+var
+  arr: array[1..100] of integer;
+  n, i, j, temp: integer;
+
+begin
+  writeln('Enter number of elements:');
+  readln(n);
+  writeln('Enter elements:');
+  for i := 1 to n do
+    readln(arr[i]);
+
+  for i := 1 to n-1 do
+    for j := 1 to n-i do
+      if arr[j] > arr[j+1] then
+      begin
+        temp := arr[j];
+        arr[j] := arr[j+1];
+        arr[j+1] := temp;
+      end;
+
+  writeln('Sorted array:');
+  for i := 1 to n do
+    write(arr[i], ' ');
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n²) (worst/average), O(n) (best, if already sorted)
+- **Space:** O(1) (in-place sorting)
+
+**Example Use Case:**
+Sorting a small list of student grades where simplicity is prioritized over efficiency.
+
+---
+
+### **2. Binary Search**
+**Brief Description:**
+A fast search algorithm that works on sorted arrays by repeatedly dividing the search interval in half.
+
+**Pascal Implementation:**
+```pascal
+program BinarySearch;
+var
+  arr: array[1..100] of integer;
+  n, target, left, right, mid: integer;
+  found: boolean;
+
+begin
+  writeln('Enter number of elements (sorted):');
+  readln(n);
+  writeln('Enter elements:');
+  for var i := 1 to n do
+    readln(arr[i]);
+  writeln('Enter target:');
+  readln(target);
+
+  left := 1;
+  right := n;
+  found := false;
+
+  while left <= right do
+  begin
+    mid := (left + right) div 2;
+    if arr[mid] = target then
+    begin
+      found := true;
+      break;
+    end
+    else if arr[mid] < target then
+      left := mid + 1
+    else
+      right := mid - 1;
+  end;
+
+  if found then
+    writeln('Found at position ', mid)
+  else
+    writeln('Not found');
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(log n)
+- **Space:** O(1)
+
+**Example Use Case:**
+Searching for a book in a library catalog sorted by ISBN.
+
+---
+
+### **3. Dijkstra’s Shortest Path**
+**Brief Description:**
+Finds the shortest paths from a single source node to all other nodes in a weighted graph with non-negative edges.
+
+**Pascal Implementation:**
+```pascal
+program Dijkstra;
+const
+  INF = 9999;
+  MAX = 100;
+
+var
+  graph: array[1..MAX, 1..MAX] of integer;
+  dist: array[1..MAX] of integer;
+  visited: array[1..MAX] of boolean;
+  n, source, i, j, min, u: integer;
+
+begin
+  writeln('Enter number of nodes:');
+  readln(n);
+  writeln('Enter adjacency matrix (use 0 for no edge):');
+  for i := 1 to n do
+    for j := 1 to n do
+      read(graph[i, j]);
+
+  writeln('Enter source node:');
+  readln(source);
+
+  for i := 1 to n do
+  begin
+    dist[i] := INF;
+    visited[i] := false;
+  end;
+  dist[source] := 0;
+
+  for i := 1 to n-1 do
+  begin
+    min := INF;
+    for j := 1 to n do
+      if not visited[j] and dist[j] < min then
+      begin
+        min := dist[j];
+        u := j;
+      end;
+    visited[u] := true;
+
+    for j := 1 to n do
+      if not visited[j] and graph[u, j] > 0 and dist[u] + graph[u, j] < dist[j] then
+        dist[j] := dist[u] + graph[u, j];
+  end;
+
+  writeln('Shortest distances from node ', source, ':');
+  for i := 1 to n do
+    writeln(i, ': ', dist[i]);
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n²) (with adjacency matrix)
+- **Space:** O(n²)
+
+**Example Use Case:**
+Finding the fastest route in a road network (e.g., GPS navigation).
+
+---
+
+### **4. Fibonacci (Dynamic Programming)**
+**Brief Description:**
+Computes the nth Fibonacci number using memoization to avoid redundant calculations.
+
+**Pascal Implementation:**
+```pascal
+program FibonacciDP;
+var
+  memo: array[0..100] of integer;
+  n, i: integer;
+
+function fib(x: integer): integer;
+begin
+  if memo[x] <> -1 then
+    fib := memo[x]
+  else
+  begin
+    if x <= 1 then
+      fib := x
+    else
+      fib := fib(x-1) + fib(x-2);
+    memo[x] := fib;
+  end;
+end;
+
+begin
+  writeln('Enter n:');
+  readln(n);
+  for i := 0 to n do
+    memo[i] := -1;
+  writeln('Fibonacci(', n, ') = ', fib(n));
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n)
+- **Space:** O(n)
+
+**Example Use Case:**
+Calculating population growth of rabbits (classic Fibonacci problem).
+
+---
+
+### **5. Depth-First Search (DFS)**
+**Brief Description:**
+A graph traversal algorithm that explores as far as possible along each branch before backtracking.
+
+**Pascal Implementation:**
+```pascal
+program DFS;
+const
+  MAX = 100;
+
+var
+  graph: array[1..MAX, 1..MAX] of integer;
+  visited: array[1..MAX] of boolean;
+  n, i, j: integer;
+
+procedure dfs(node: integer);
+var
+  i: integer;
+begin
+  visited[node] := true;
+  write(node, ' ');
+  for i := 1 to n do
+    if graph[node, i] = 1 and not visited[i] then
+      dfs(i);
+end;
+
+begin
+  writeln('Enter number of nodes:');
+  readln(n);
+  writeln('Enter adjacency matrix (1 for edge, 0 for no edge):');
+  for i := 1 to n do
+    for j := 1 to n do
+      read(graph[i, j]);
+
+  for i := 1 to n do
+    visited[i] := false;
+
+  writeln('DFS traversal:');
+  dfs(1);
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n²) (with adjacency matrix)
+- **Space:** O(n) (recursion stack)
+
+**Example Use Case:**
+Solving puzzles like mazes or checking connectivity in a network.
+
+---
+
+### **6. Merge Sort**
+**Brief Description:**
+A divide-and-conquer sorting algorithm that splits the array into halves, sorts them, and merges them back.
+
+**Pascal Implementation:**
+```pascal
+program MergeSort;
+var
+  arr: array[1..100] of integer;
+  n: integer;
+
+procedure merge(l, m, r: integer);
+var
+  i, j, k: integer;
+  n1, n2: integer;
+  L, R: array[1..100] of integer;
+begin
+  n1 := m - l + 1;
+  n2 := r - m;
+  for i := 1 to n1 do
+    L[i] := arr[l + i - 1];
+  for j := 1 to n2 do
+    R[j] := arr[m + j];
+
+  i := 1;
+  j := 1;
+  k := l;
+  while i <= n1 and j <= n2 do
+  begin
+    if L[i] <= R[j] then
+    begin
+      arr[k] := L[i];
+      i := i + 1;
+    end
+    else
+    begin
+      arr[k] := R[j];
+      j := j + 1;
+    end;
+    k := k + 1;
+  end;
+
+  while i <= n1 do
+  begin
+    arr[k] := L[i];
+    i := i + 1;
+    k := k + 1;
+  end;
+
+  while j <= n2 do
+  begin
+    arr[k] := R[j];
+    j := j + 1;
+    k := k + 1;
+  end;
+end;
+
+procedure mergeSort(l, r: integer);
+var
+  m: integer;
+begin
+  if l < r then
+  begin
+    m := (l + r) div 2;
+    mergeSort(l, m);
+    mergeSort(m + 1, r);
+    merge(l, m, r);
+  end;
+end;
+
+begin
+  writeln('Enter number of elements:');
+  readln(n);
+  writeln('Enter elements:');
+  for var i := 1 to n do
+    readln(arr[i]);
+
+  mergeSort(1, n);
+
+  writeln('Sorted array:');
+  for var i := 1 to n do
+    write(arr[i], ' ');
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n log n)
+- **Space:** O(n)
+
+**Example Use Case:**
+Sorting large datasets where stability and efficiency are critical.
+
+---
+
+### **7. Knapsack Problem (Dynamic Programming)**
+**Brief Description:**
+Solves the 0/1 knapsack problem, maximizing value without exceeding weight capacity.
+
+**Pascal Implementation:**
+```pascal
+program Knapsack;
+var
+  weight, value: array[1..100] of integer;
+  dp: array[0..100, 0..100] of integer;
+  n, W, i, w: integer;
+
+begin
+  writeln('Enter number of items:');
+  readln(n);
+  writeln('Enter weights and values:');
+  for i := 1 to n do
+    readln(weight[i], value[i]);
+  writeln('Enter knapsack capacity:');
+  readln(W);
+
+  for i := 0 to n do
+    for w := 0 to W do
+    begin
+      if i = 0 or w = 0 then
+        dp[i, w] := 0
+      else if weight[i] <= w then
+        dp[i, w] := max(value[i] + dp[i-1, w-weight[i]], dp[i-1, w])
+      else
+        dp[i, w] := dp[i-1, w];
+    end;
+
+  writeln('Maximum value: ', dp[n, W]);
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(nW)
+- **Space:** O(nW)
+
+**Example Use Case:**
+Optimizing cargo loading in logistics.
+
+---
+
+### **8. Quick Sort**
+**Brief Description:**
+A divide-and-conquer sorting algorithm that picks a pivot and partitions the array around it.
+
+**Pascal Implementation:**
+```pascal
+program QuickSort;
+var
+  arr: array[1..100] of integer;
+  n: integer;
+
+procedure swap(var a, b: integer);
+var
+  temp: integer;
+begin
+  temp := a;
+  a := b;
+  b := temp;
+end;
+
+function partition(low, high: integer): integer;
+var
+  pivot, i, j: integer;
+begin
+  pivot := arr[high];
+  i := low - 1;
+  for j := low to high-1 do
+    if arr[j] < pivot then
+    begin
+      i := i + 1;
+      swap(arr[i], arr[j]);
+    end;
+  swap(arr[i+1], arr[high]);
+  partition := i + 1;
+end;
+
+procedure quickSort(low, high: integer);
+var
+  pi: integer;
+begin
+  if low < high then
+  begin
+    pi := partition(low, high);
+    quickSort(low, pi-1);
+    quickSort(pi+1, high);
+  end;
+end;
+
+begin
+  writeln('Enter number of elements:');
+  readln(n);
+  writeln('Enter elements:');
+  for var i := 1 to n do
+    readln(arr[i]);
+
+  quickSort(1, n);
+
+  writeln('Sorted array:');
+  for var i := 1 to n do
+    write(arr[i], ' ');
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n log n) (average), O(n²) (worst)
+- **Space:** O(log n) (recursion stack)
+
+**Example Use Case:**
+Sorting large datasets in memory-constrained environments.
+
+---
+
+### **9. Prim’s Minimum Spanning Tree**
+**Brief Description:**
+Finds a minimum spanning tree for a weighted undirected graph.
+
+**Pascal Implementation:**
+```pascal
+program PrimsMST;
+const
+  MAX = 100;
+  INF = 9999;
+
+var
+  graph: array[1..MAX, 1..MAX] of integer;
+  key, parent: array[1..MAX] of integer;
+  visited: array[1..MAX] of boolean;
+  n, i, j, min, u: integer;
+
+begin
+  writeln('Enter number of nodes:');
+  readln(n);
+  writeln('Enter adjacency matrix (use 0 for no edge):');
+  for i := 1 to n do
+    for j := 1 to n do
+      read(graph[i, j]);
+
+  for i := 1 to n do
+  begin
+    key[i] := INF;
+    visited[i] := false;
+  end;
+  key[1] := 0;
+  parent[1] := -1;
+
+  for i := 1 to n-1 do
+  begin
+    min := INF;
+    for j := 1 to n do
+      if not visited[j] and key[j] < min then
+      begin
+        min := key[j];
+        u := j;
+      end;
+    visited[u] := true;
+
+    for j := 1 to n do
+      if graph[u, j] > 0 and not visited[j] and graph[u, j] < key[j] then
+      begin
+        parent[j] := u;
+        key[j] := graph[u, j];
+      end;
+  end;
+
+  writeln('Edge \tWeight');
+  for i := 2 to n do
+    writeln(parent[i], ' - ', i, '\t', graph[i, parent[i]]);
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(n²) (with adjacency matrix)
+- **Space:** O(n²)
+
+**Example Use Case:**
+Designing cost-effective network cabling for a campus.
+
+---
+
+### **10. Longest Common Subsequence (LCS)**
+**Brief Description:**
+Finds the longest subsequence present in two sequences in the same order (not necessarily contiguous).
+
+**Pascal Implementation:**
+```pascal
+program LCS;
+var
+  X, Y: string;
+  m, n: integer;
+  dp: array[0..100, 0..100] of integer;
+
+begin
+  writeln('Enter first string:');
+  readln(X);
+  writeln('Enter second string:');
+  readln(Y);
+  m := length(X);
+  n := length(Y);
+
+  for var i := 0 to m do
+    for var j := 0 to n do
+    begin
+      if i = 0 or j = 0 then
+        dp[i, j] := 0
+      else if X[i] = Y[j] then
+        dp[i, j] := dp[i-1, j-1] + 1
+      else
+        dp[i, j] := max(dp[i-1, j], dp[i, j-1]);
+    end;
+
+  writeln('Length of LCS: ', dp[m, n]);
+end.
+```
+
+**Time and Space Complexity:**
+- **Time:** O(mn)
+- **Space:** O(mn)
+
+**Example Use Case:**
+DNA sequence alignment in bioinformatics.
+
+---
+
+These examples cover a broad range of algorithmic techniques and applications.

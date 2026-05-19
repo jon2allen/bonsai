@@ -3,8 +3,8 @@
 
 # Configuration
 set model1 = "prism_bonsai"
-set model2 = "qwen3_llamacpp_1"
-set judge_model = "prism_bonsai"
+set model2 = "mistral_1"
+set judge_model = "mistral_1i"
 set output_dir = "pascal_algorithms_actual"
 set algorithm_count = 10
 
@@ -32,7 +32,7 @@ Format each algorithm clearly with all five components.
 /save ${model1_results}
 /filebank1 ${model1_results}
 
-# Generate Pascal algorithm examples with Model 2 (Qwen3)
+# Generate Pascal algorithm examples with Model 2 (Mistral3)
 /model ${model2}
 /multiline
 List ${algorithm_count} Pascal algorithm examples with the following structure for each:
